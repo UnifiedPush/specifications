@@ -1,0 +1,62 @@
+# Definitions
+
+## Application Server
+
+This is the server that hosts the application.
+
+## End User Application
+
+This is the application used by the end user to connect to the application server and to interact with it.
+
+## Message
+
+This is the content that the application server is sending to the end user application.
+
+## Push System
+
+This is the whole system involved in the delivering of the message from the application server to the end user application.
+
+## Application Push Protocol
+Or Application Server Protocol
+
+This is the protocol the application server use to send message.
+
+## Provider Receiving Protocol
+
+This is the protocol the Push Provider use to receive message.
+
+## Provider Push Protocol
+
+This is the protocol the Push Provider use to send message to the distributor application.
+
+## Distributor Receiving Protocol
+
+This refers to the provider push protocol except if the distributor application act as a push provider, then this refers to the provider receiving protocol.
+
+## Push Gateway
+Or Gateway
+
+This is the server or programm the application server sends messages to with its application push protocol. 
+
+It is used to convert the application push protocol to the provider receiving protocol. 
+
+If the application push protocol and the provider receiving protocol are the same, and the application server can reach the push provider, then the gateway is not necessary, and the gateway will refer to the push provider.
+If the application push protocol and the provider receiving protocol are the same, but the application server can not reach the push provider, then the gateway do not have to modify the request but have to forward it. In this case it can be called a proxy.
+
+## Push Provider
+Or Provider
+Or Push Notification Provider
+
+This is the server that listen for incoming messages using its provider receiving protocol and forward it to the connected phone using the provider push protocol.
+
+## Distributor Application
+Or Distributor
+
+This is the application that forward messages to the registered end user application. It is the application which is connected to the push provider.
+
+## Connector Library
+Or Connector
+Or UnifiedPush Library
+
+This is the library used by the end user application to register for push notifications to the distributor applicaton and to receive messages forwarded from the ditributor application.
+
