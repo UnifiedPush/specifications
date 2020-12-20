@@ -14,12 +14,12 @@ This is the content that the application server is sending to the end user appli
 
 ## Push System
 
-This is the whole system involved in the delivering of the push message from the application server to the end user application.
+This is the whole system used to deliver the push message from the application server to the end user application.
 
 ## Application Push Protocol
 Or Application Server Protocol
 
-This is the protocol the application server use to send push message.
+This is the protocol the application server use to send push message. This is usually either the Provider Receiving Protocol or the Gateway Receiving Protocol.
 
 ## Provider Receiving Protocol
 
