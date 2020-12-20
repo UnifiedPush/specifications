@@ -46,7 +46,9 @@ If the application push protocol and the provider receiving protocol are the sam
 
 ## Rewrite Proxy
 
-If the Provider Receiving Protocol needs anything else than the URI and a GET parameter to identify the end user application (eg. header, POST parameter) or need a special structure for POST data, then a rewrite proxy is used to convert the identifier in a URI or in a GET parameter and to forge the POST parameter content structure. The rewrite proxy is application independant and provider dependant.
+If the Provider Receiving Protocol needs anything else than the URI and a GET parameter to identify the end user application (eg. header, POST parameter) or need a special structure for POST data, then a rewrite proxy is used to convert the identifier in a URI or in a GET parameter and to forge the POST parameter content structure.
+
+The rewrite proxy is application independant and provider dependant.
 
 ## Push Provider
 Or Provider
@@ -64,4 +66,8 @@ Or Connector
 Or UnifiedPush Library
 
 This is the library used by the end user application to register for push notifications to the distributor applicaton and to receive push messages forwarded from the ditributor application.
+
+## Endpoint
+
+This is the URL of the rewrite proxy (if there is one, of the push provider else) where push messages are sent for a specific end user application, from the gateway.
 
