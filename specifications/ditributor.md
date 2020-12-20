@@ -25,7 +25,7 @@ When the distributor handles this type of message it :
 #### TYPE_CLIENT_REGISTERED message
 
 The distributor sends this message during registration if the registration was successful.
-The message data bundle MUST contain "endpoint" containing the endpoint prefix and CAN contain anything else. 
+The message data bundle MUST contain "endpoint" containing the endpoint and CAN contain anything else. 
 
 #### TYPE_CLIENT_REGISTER_FAILED message
 
@@ -33,7 +33,7 @@ The distributor sends this message during registration if the registration was n
 The message data bundle MUST contain "reason" containing one of the following strings :
 * "DISABLED" if the registrations are disabled on the distributor.
 * "BLOCKED" if the request was not accepted by the distributor.
-* "DEFERRED" if the distributor could not achieve the registration but is committing to do so once it is able. (due to a miss connection with one of its remote part.) The endpoint prefix MUST be sent to the end user application with the endpoint update function (cf. coming).
+* "DEFERRED" if the distributor could not achieve the registration but is committing to do so once it is able. (due to a miss connection with one of its remote part.) The endpoint MUST be sent to the end user application with the endpoint update function (cf. coming).
 The message data bundle CAN contain any other value.
 
 #### TYPE_CLIENT_UNREGISTER message
