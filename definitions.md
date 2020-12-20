@@ -41,7 +41,12 @@ This is the server or programm the application server sends push messages to wit
 It is used to convert the application push protocol to the provider receiving protocol. 
 
 If the application push protocol and the provider receiving protocol are the same, and the application server can reach the push provider, then the gateway is not necessary, and the gateway will refer to the push provider.
+
 If the application push protocol and the provider receiving protocol are the same, but the application server can not reach the push provider, then the gateway do not have to modify the request but have to forward it. In this case it can be called a proxy.
+
+## Rewrite Proxy
+
+If the Provider Receiving Protocol needs anything else than the URI and a GET parameter to identify the end user application (eg. header, POST parameter) or need a special structure for POST data, then a rewrite proxy is used to convert the identifier in a URI or in a GET parameter and to forge the POST parameter content structure. The rewrite proxy is application independant and provider dependant.
 
 ## Push Provider
 Or Provider
