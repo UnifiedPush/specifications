@@ -18,9 +18,11 @@ The library itself does not declare any activity, service or receiver in the man
 
 ### Incoming Handler
 
-The exposed service MUST handle 3 different types of messages:
+The exposed service MUST handle 2 different types of messages:
 * TYPE_DISTRIBUTOR_MESSAGE
 * TYPE_DISTRIBUTOR_ENDPOINT_CHANGED
+
+There is a third type of message that SHOULD be handled:
 * TYPE_DITRIBUTOR_UNREGISTERED
 
 #### TYPE_DISTRIBUTOR_MESSAGE
