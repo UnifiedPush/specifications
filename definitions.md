@@ -8,7 +8,7 @@ This is the server that hosts the application.
 
 This is the application used by the end user to connect to the application server and to interact with it.
 
-## Message
+## Push Message
 
 This is the content that the application server is sending to the end user application.
 
