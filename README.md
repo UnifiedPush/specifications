@@ -1,2 +1,2 @@
-# UP-doc
-Document &amp; Spec on UnifiedPush
+# UP-spec
+UnifiedPush Specifications
