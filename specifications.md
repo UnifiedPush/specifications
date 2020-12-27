@@ -80,7 +80,7 @@ The distributor MUST send this action to the registered application to confirm t
 
 The distributor MUST send this action to the registered application to forward a push message received from the provider to the end user application with the 2 following extras:
 * token: the token supplied by the end user application during registration
-* message: the push message sent by the application server
+* message: the push message sent by the application server. It MUST be the raw POST data received by the rewrite proxy.
 
 ### org.unifiedpush.android.distributor.UNREGISTERED
 
