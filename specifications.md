@@ -60,29 +60,38 @@ When the distributor handles this action :
 When the distributor handles this action :
 * MUST send a broadcast intent to the action org.unifiedpush.android.connector.UNREGISTERED of the registered app.
 
+### org.unifiedpush.android.distributor.MESSAGE_ACK
+
+The connector MUST reply with this action to the distributor with the String extra id received to acknowledge the message reception.
+
 
 ## Messaging Broadcast Receiver
 
 The exposed broadcast receiver of the distributor application MUST handle 3 differents actions:
-* org.unifiedpush.android.distributor.NEW_ENDPOINT
-* org.unifiedpush.android.distributor.MESSAGE
+* org.unifiedpush.android.connector.NEW_ENDPOINT
+* org.unifiedpush.android.connector.MESSAGE
 
 There is a third action the connector SHOULD handle:
-* org.unifiedpush.android.distributor.UNREGISTERED
+* org.unifiedpush.android.connector.UNREGISTERED
 
-### org.unifiedpush.android.distributor.NEW_ENDPOINT
+### org.unifiedpush.android.connector.NEW_ENDPOINT
 
 The distributor MUST send this action to the registered application to confirm the registration of an end user application or when the endpoint change with the 2 following extras:
 * token: the token supplied by the end user application during registration
 * endpoint: the endpoint
 
-### org.unifiedpush.android.distributor.MESSAGE
+### org.unifiedpush.android.connector.MESSAGE
 
-The distributor MUST send this action to the registered application to forward a push message received from the provider to the end user application with the 2 following extras:
+The distributor MUST send this action to the registered application to forward a push message received from the provider to the end user application.
+
+It MUST be send with the 2 following extras:
 * token: the token supplied by the end user application during registration
 * message: the push message sent by the application server. It MUST be the raw POST data received by the rewrite proxy.
 
-### org.unifiedpush.android.distributor.UNREGISTERED
+It MAY be send with the following extra:
+* id: to identify the message
+
+### org.unifiedpush.android.connector.UNREGISTERED
 
 The distributor MUST send this action to the registered application to confirm unregistration or to inform the application about unregistration.
 
