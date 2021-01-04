@@ -50,10 +50,10 @@ The connector send this action to register to push messages. The intent MUST con
 * application: with the end user application package name
 * token: with a random token to identify the connection between the connector and the distributor
 
-When the distributor handles this action :
-* MUST send a broadcast intent to the action org.unifiedpush.android.connector.NEW_ENDPOINT of the registered app, with 2 String extras :
-	* token: the token supplied by the end user application during registration
-	* endpoint: the endpoint
+The distributor MUST send a broadcast intent to one of the following action when it handles this action:
+* org.unifiedpush.android.connector.NEW_ENDPOINT
+* org.unifiedpush.android.connector.REGISTRATION_REFUSED
+* org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 ### org.unifiedpush.android.distributor.UNREGISTER
 
@@ -79,6 +79,18 @@ There is a third action the connector SHOULD handle:
 The distributor MUST send this action to the registered application to confirm the registration of an end user application or when the endpoint change with the 2 following extras:
 * token: the token supplied by the end user application during registration
 * endpoint: the endpoint
+
+### org.unifiedpush.android.connector.REFUSED
+
+The distributor MUST send this action to the registered application if the package is already registered with another token or if the distributor refuses for another reason with the 2 following extras:
+* token: the token supplied by the end user application during registration
+* message: this extra MAY be sent to gives an error message
+
+### org.unifiedpush.android.connector.FAILED
+
+The distributor MUST send this action to the registered application if the registration can not be processed but it is not refused (for instance when the distributor is not connected to its provider server) with the 2 following extras:
+* token: the token supplied by the end user application during registration
+* message: this extra MAY be sent to gives an error message
 
 ### org.unifiedpush.android.connector.MESSAGE
 
