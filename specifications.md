@@ -18,6 +18,7 @@ The distributor application MUST expose the registration broadcast receiver, all
 The distributor MUST expose a broadcast receiver with the following actions:
 * org.unifiedpush.android.distributor.REGISTER
 * org.unifiedpush.android.distributor.UNREGISTER
+* org.unifiedpush.android.distributor.MESSAGE_ACK
 
 This broadcast receiver is the Registration Broadcast Receiver.
 
