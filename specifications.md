@@ -47,8 +47,8 @@ The exposed broadcast receiver of the distributor application MUST handle 2 diff
 ### org.unifiedpush.android.distributor.REGISTER
 
 The connector send this action to register to push messages. The intent MUST contain 2 String extras:
-* application: with the end user application package name
-* token: with a random token to identify the connection between the connector and the distributor
+* application: with the end user application package name. The distributor MUST be able to handle many connections with a single application.
+* token: with a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side.
 
 The distributor MUST send a broadcast intent to one of the following action when it handles this action:
 * org.unifiedpush.android.connector.NEW_ENDPOINT
