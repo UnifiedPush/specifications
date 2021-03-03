@@ -34,6 +34,8 @@ The library itself does not declare any activity, service or receiver in the man
 * org.unifiedpush.android.connector.NEW_ENDPOINT
 * org.unifiedpush.android.connector.UNREGISTERED
 * org.unifiedpush.android.connector.MESSAGE
+* org.unifiedpush.android.connector.REGISTRATION_REFUSED
+* org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 This broadcast receiver is the Messaging Broadcast Receiver.
 
@@ -80,13 +82,13 @@ The distributor MUST send this action to the registered application to confirm t
 * token: the token supplied by the end user application during registration
 * endpoint: the endpoint
 
-### org.unifiedpush.android.connector.REFUSED
+### org.unifiedpush.android.connector.REGISTRATION_REFUSED
 
 The distributor MUST send this action to the registered application if the package is already registered with another token or if the distributor refuses for another reason with the 2 following extras:
 * token: the token supplied by the end user application during registration
 * message: this extra MAY be sent to gives an error message
 
-### org.unifiedpush.android.connector.FAILED
+### org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 The distributor MUST send this action to the registered application if the registration can not be processed but it is not refused (for instance when the distributor is not connected to its provider server) with the 2 following extras:
 * token: the token supplied by the end user application during registration
