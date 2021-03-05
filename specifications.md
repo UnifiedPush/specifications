@@ -78,7 +78,7 @@ There is a third action the connector SHOULD handle:
 
 ### org.unifiedpush.android.connector.NEW_ENDPOINT
 
-The distributor MUST send this action to the registered application to confirm the registration of an end user application or when the endpoint change with the 2 following extras:
+The distributor MUST send this action to the registered application to confirm the registration of an end user application, when a registered application send again an action with the intent org.unifiedpush.android.distributor.REGISTER and a valid token, or when the endpoint change with the 2 following extras:
 * token: the token supplied by the end user application during registration
 * endpoint: the endpoint
 
