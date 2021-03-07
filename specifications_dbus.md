@@ -2,11 +2,16 @@
 
 ## Index
 
+* [Connection](#connection)
 * [Connector](#connector)
 * [Connector API](#connector-API)
 * [Distributor](#distributor)
 * [Distributor API](#distributor-api)
 * [Appendix: Implementation practices](#appendix-implementation-practices)
+
+## Connection
+
+A *connection* is created when a connector registers with a distributor. It is uniquely identified by its *token*, a random string which the connector generates as part of the registration process.
 
 ## Connector
 
@@ -32,7 +37,7 @@ The first argument is the token of the connection, the second argument is the ra
 
 ### org.unifiedpush.Connector1.NewEndpoint (String, String) → nothing
 
-The distributor calls this method to inform the connector that the endpoint URL for sending push messages has changed. In addition to implementing this method, the connector SHOULD also call [org.unifiedpush.Distributor1.Register](#orgunifiedpushdistributor1register-string--string-string) on every startup to fetch the newest endpoint URL, in case it missed this call.
+The distributor calls this method to inform the connector of the endpoint URL, both after registering for the first time, and if the endpoint changes afterwards. In addition to implementing this method, the connector SHOULD also call [org.unifiedpush.Distributor1.Register](#orgunifiedpushdistributor1register-string--string-string) on every startup to request the newest endpoint URL, in case it missed this call otherwise.
 
 The first argument is the token of the connection, and the second argument is the new endpoint. This method does not return anything.
 
@@ -52,15 +57,15 @@ Distributors MUST provide a service with a name beginning with `org.unifiedpush.
 
 The distributor MUST implement the `org.unifiedpush.Distributor1` interface at the object path `/org/unifiedpush/Distributor`.
 
-### org.unifiedpush.Distributor1.Register (String) → (String, String)
+### org.unifiedpush.Distributor1.Register (String, String) → (String, String)
 
 The connector calls this method to register for push messages, or to retreive the newest push endpoint (as it may change at any time). See also the `org.unifiedpush.Connector1.NewEndpoint` method.
 
 When it has not registered before, the connector generates a random string to use as its *token* and calls this method with the token as its argument to register. At every subsequent startup of the app, it SHOULD call this method with the same token as before, to fetch the newest endpoint from the connector.
 
-The connector must use the name of the caller of this method as the application ID of the new connection. 
+The method returns two strings. The first string MUST be either "NEW_ENDPOINT", "REGISTRATION_REFUSED", or "REGISTRATION_FAILED". It is "NEW_ENDPOINT" if registration succeeded. It is "REGISTRATION_REFUSED" in case the registration attempt was refused, and the connector SHOULD NOT try to register again. It is "REGISTRATION_FAILED" in case the registration failed for some other reason, and the connector MAY try to register again. The second string MAY contain a reason string, or it may be empty.
 
-The method returns two strings. The first string MUST be either "NEW_ENDPOINT" or "REGISTRATION_FAILED". It is "NEW_ENDPOINT" if registration succeeded, and in that case the second string MUST contain the new endpoint URL. It is "REGISTRATION_FAILED" in case the registration failed, and in that case the second string MAY contain an error message.
+If registration succeeded, the distributor MUST call the connector's [org.unifiedpush.Connector1.NewEndpoint](#orgunifiedpushconnector1newendpoint-string-string--nothing) method to deliver the new push endpoint to it.
 
 ### org.unifiedpush.Distributor1.Unregister (String) → nothing
 
