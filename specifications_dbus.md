@@ -43,7 +43,7 @@ The first argument is the token of the connection, and the second argument is th
 
 ### org.unifiedpush.Connector1.Unregister (String) → nothing
 
-The distributor calls this method to inform the connector that it has been unregistered for some server-side or distributor-side reason.
+The distributor calls this method to inform the connector that it has been unregistered for some server-side or distributor-side reason. If the app wants to remain registered, it SHOULD simply call [org.unifiedpush.Distributor1.Register](#orgunifiedpushdistributor1register-string--string-string) again after getting unregistered. A response indicating "REGISTRATION_REFUSED" would mean that the app is no longer allowed to register.
 
 The argument of the method is the token of the connection. This method does not return anything.
 
