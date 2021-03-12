@@ -87,8 +87,6 @@ Exec=/usr/bin/yourapp --push-message
 
 The "--push-message" flag can be anything you want here, the point of it is just that when this command is executed, it starts up in an "invisible" or "background" way so that it doesn't jump into the user's face just because a push message arrived. Instead of a command line flag, this could be an environment variable (`env SOME_VARIABLE=1 /usr/bin/yourapp`). It would be a good idea to end the process after "doing its thing" in the background (for example sending a desktop notification), so that the app does not stay running forever in the background after receiving one notification.
 
-Note that if you send a desktop notification with an action attached, then quit the app, clicking the notification should  send a D-Bus message to the app, causing your app to get activated (started) once again so it can receive the "notification clicked" message. This is in theory, I have not tested how this works in practice.
-
 ### Choosing a distributor
 
 When you list all services that begin with `org.unifiedpush.Distributor.` on the session bus, you may get zero, one, or multiple results. If there are zero, you can't register to get push notifications. If there is one, you can simply choose that one. If there are multiple, then you can choose one of them by presenting a UI to select one provider (since the user likely knows why they have multiple different providers running). You can also get the "preferred" distributor from an environment variable, although the name and behavior of this variable has not been specced (TODO).
