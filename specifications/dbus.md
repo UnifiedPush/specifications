@@ -3,48 +3,76 @@
 ## Index
 
 * [Connector API](#connector-API)
-* [Distributor API](#distributor-api)
+* [Distributor API](#distributor-API)
 * [Appendix: Implementation practices](#appendix-implementation-practices)
 
 ## Connector API
 
-Connectors MUST provide a service with their application ID, that is, the same name as the name that they sent their `org.unifiedpush.Distributor1.Register` call from.
+The connector MUST provide a service with a name identifying a the application (standard reverse DNS style application ID, which is also used in D-Bus APIs).
 
-Connectors MUST implement the `org.unifiedpush.Connector1` interface at the object path `/org/unifiedpush/Connector`. The caller of the methods in this interface MUST NOT wait for a response from them!
+The connector MUST implement the `org.unifiedpush.Connector1` interface at the object path `/org/unifiedpush/Connector`.
+
+The caller of the methods in this interface MUST NOT wait for a response from them.
 
 ### org.unifiedpush.Connector1.Message (String, String, String) → nothing
 
-The distributor calls this method to send a new push message to the connector.
+The distributor MUST call this method to send a new push message to the connector.
 
-The first argument is the token of the connection, the second argument is the raw POST data as received by the distributor, and the third argument is optionally an ID identifying the message (otherwise it is an empty string). This method does not return anything.
+Arguments MUST be, in the order below:
+
+* the token of the connection (string)
+* the message, which is the raw POST data received by the provider (string)
+* an ID identifying the message or an empty string. (string)
+
+This method does not return anything.
 
 ### org.unifiedpush.Connector1.NewEndpoint (String, String) → nothing
 
-The distributor MUST call this method to inform the connector of the endpoint URL, both after registering for the first time, and if the endpoint changes afterwards. In addition to implementing this method, the connector SHOULD also call [org.unifiedpush.Distributor1.Register](#orgunifiedpushdistributor1register-string--string-string) on every startup to request the newest endpoint URL, in case it missed this call otherwise.
+The distributor MUST call this method to inform the connector of the endpoint URL, both after registering for the first time, and if the endpoint changes afterwards.
 
-The first argument is the token of the connection, and the second argument is the new endpoint. This method does not return anything.
+Arguments MUST be, in the order below:
 
-### org.unifiedpush.Connector1.Unregister (String) → nothing
+* the token of the connection (string)
+* the new endpoint. (string)
 
-The distributor calls this method to inform the connector that it has been unregistered for some server-side or distributor-side reason. If the app wants to remain registered, it SHOULD simply call [org.unifiedpush.Distributor1.Register](#orgunifiedpushdistributor1register-string--string-string) again after getting unregistered. A response indicating "REGISTRATION_REFUSED" would mean that the app is no longer allowed to register.
+This method does not return anything.
 
-The argument of the method is the token of the connection. This method does not return anything.
+### org.unifiedpush.Connector1.Unregistered (String) → nothing
+
+The distributor MUST call this method to confirm unregistration or to inform the application that it has been unregistered.
+
+If this action is send to inform the application, the intent MUST have the following argument:
+
+Arguments MUST be, in the order below:
+
+* the token of the connection if this action is not to confirm unregistration, empty otherwise (string)
+
+This method does not return anything.
+
+If the app wants to remain registered, it MUST register agian.
 
 ## Distributor API
 
-Distributors MUST provide a service with a name beginning with `org.unifiedpush.Distributor.` followed by the name of the distributor (for example, `org.unifiedpush.Distributor.distributorname` where `distributorname` is the distributor's name)
+Distributors MUST provide a service with a name beginning with `org.unifiedpush.Distributor.` followed by a string to identify the distributor (for example, `org.unifiedpush.Distributor.distributorname` where `distributorname` is the distributor's name)
 
 The distributor MUST implement the `org.unifiedpush.Distributor1` interface at the object path `/org/unifiedpush/Distributor`.
 
 ### org.unifiedpush.Distributor1.Register (String, String) → (String, String)
 
-The connector calls this method to register for push messages, or to retreive the newest push endpoint (as it may change at any time). See also the `org.unifiedpush.Connector1.NewEndpoint` method.
+The connector MUST call this method to register for push messages or to retreive the push endpoint.
 
-The method takes two string arguments. The first one is the connector's application ID (standard reverse DNS style application ID, which is also used elsewhere in D-Bus APIs), while the second one is a token to identify the connection between the connector and the distributor.
+Arguments MUST be, in the order below:
+
+* the service name identifying the application, (string)
+* a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side. (string)
+
 
 When it has not registered before, the connector MUST generate a random string to use as its token, and call this method with that token as its argument to register. At every subsequent startup of the app, it SHOULD call this method with the same token as before, to fetch the newest endpoint from the connector.
 
-The method returns two strings. The first string MUST be either "NEW_ENDPOINT", "REGISTRATION_REFUSED", or "REGISTRATION_FAILED", and the second string MAY contain a reason string, or it may be empty.
+The method MUST returns two strings, in the order below : 
+
+* either "NEW_ENDPOINT", "REGISTRATION_REFUSED", or "REGISTRATION_FAILED", (string)
+* a reason string that MAY be empty. (string)
 
 The first string is "NEW_ENDPOINT" if registration succeeded. It is "REGISTRATION_REFUSED" in case the registration attempt was refused, and the connector SHOULD NOT try to register again. It is "REGISTRATION_FAILED" in case the registration failed for some other reason, and the connector MAY try to register again.
 
@@ -52,7 +80,12 @@ If registration succeeded, the distributor MUST call the connector's [org.unifie
 
 ### org.unifiedpush.Distributor1.Unregister (String) → nothing
 
-The connector calls this method to unregister for push messages, with the connection token as its argument. The method does not return anything.
+The connector MUST call this method to unregister for push messages.
+
+Arguments MUST be:
+* the token of the connection (string).
+
+The method does not return anything.
 
 ## Appendix: Implementation practices
 
@@ -81,3 +114,7 @@ The "--push-message" flag can be anything you want here, the point of it is just
 ### Choosing a distributor
 
 When you list all services that begin with `org.unifiedpush.Distributor.` on the session bus, you may get zero, one, or multiple results. If there are zero, you can't register to get push notifications. If there is one, you can simply choose that one. If there are multiple, then you can choose one of them by presenting a UI to select one provider (since the user likely knows why they have multiple different providers running). You can also get the "preferred" distributor from an environment variable, although the name and behavior of this variable has not been specced (TODO).
+
+### On Application Startup
+The application should call [org.unifiedpush.Distributor1.Register](#orgunifiedpushdistributor1register-string--string-string) on every startup to request the newest endpoint URL, in case it missed this call otherwise.
+
