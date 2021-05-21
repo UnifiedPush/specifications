@@ -59,4 +59,4 @@ Any other HTTP responses mean an unknown error occurred. The push request MAY be
 
 ### SSRF
 
-1. Application servers should add a random delay to each push registration when making the endpoint discovery request. This is to prevent push registrant from knowing whether a valid distributor was entered or not.
+1. Application servers should add a random delay to each push registration when making the endpoint discovery request. This is to prevent push registrant from knowing whether a valid HTTP server hostname was entered or not.
