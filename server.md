@@ -64,4 +64,3 @@ We strongly recommend implementing basic SSRF protection on your application:
 1. As specified in the endpoint section, push providers should only be accessed over HTTP or HTTPS.
 2. The domain name should be resolved and IPs should be checked such that they're not in a private range. For example 127.0.0.1/8, ::1, 192.168.0.0/24, 10.0.0.0/8, fc00::/7.
 3. As defined in the section about responses, 3xx response codes and redirections must not be followed.
-4. Application servers should add a random delay to each push registration when making the endpoint discovery request. This is to prevent push registrant from knowing whether a valid HTTP server hostname was entered or not.
