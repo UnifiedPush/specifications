@@ -61,6 +61,6 @@ Any other HTTP responses mean an unknown error occurred. The push request MAY be
 
 We strongly recommend implementing basic SSRF protection on your application:
 
-1. As specified in the endpoint section, push providers should only be accessed over HTTP or HTTPS.
+1. As specified in the endpoint section, push providers must only be accessed over HTTP or HTTPS: application servers and gateways should restrict schemes to http:// and https://.
 2. The domain name should be resolved and IPs should be checked such that they're not in a private range. For example 127.0.0.1/8, ::1, 192.168.0.0/24, 10.0.0.0/8, fc00::/7.
 3. As defined in the section about responses, 3xx response codes and redirections must not be followed.
