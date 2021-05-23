@@ -10,7 +10,7 @@ The endpoint MUST be a IRI (RFC 3987) with a scheme of HTTP or HTTPS that MAY us
 
 On sending a GET request to the full endpoint URL (including query parameters), the push provider MUST return the following JSON:
 ```json
-{"id":"unifiedpush","version":1}
+{"unifiedpush":{"version":1}}
 ```
 
 Application servers or gateways SHOULD check this when registering push to avoid SSRF.
