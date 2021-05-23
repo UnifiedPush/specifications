@@ -13,7 +13,7 @@ On sending a GET request to the full endpoint URL (including query parameters), 
 {"id":"unifiedpush","version":1}
 ```
 
-Application servers or gateways SHOULD check this when registering push to avoid SSRF. This should be parsed as a JSON array, so that it remains extensible for future versions.
+Application servers or gateways SHOULD check this when registering push to avoid SSRF.
 
 ## Push
 
