@@ -1,48 +1,59 @@
 # Definitions
 
 ## Application Server
+(e.g. Synapse, Fediverse Server, ...)
 
 This is the server that hosts the application.
 
 ## End User Application
+(e.g. [FluffyChat](https://fluffychat.im/), [Fedilab](https://fedilab.app/), [Tox Push Message App](https://github.com/zoff99/tox_push_msg_app))
 
-This is the application used by the end user to connect to the application server and to interact with it.
+This is the application used by the end user to connect to the [Application Server](#application-server) and to interact with it.
 
 ## Push Message
 
-This is the content that the application server is sending to the end user application.
+This is the content that the [Application Server](#application-server)
+wants to send to the [end user Application](#end-user-application).
 
 ## Push System
 
-This is the whole system used to deliver the push message from the application server to the end user application.
+This is the whole system used to deliver the [push messages](#Push-Message) 
+from the [Application Server](#application-server) 
+to the [end user Application](#end-user-application).
 
 ## Application Push Protocol
 Or Application Server Protocol
+(e.g. [Matrix push gateway api](https://spec.matrix.org/unstable/push-gateway-api/))
 
-This is the protocol the application server use to send push message. This is usually either the Provider Receiving Protocol or the Gateway Receiving Protocol.
-
-## Provider Receiving Protocol
-
-This is the protocol the Push Provider use to receive push message.
-
-## Provider Push Protocol
-
-This is the protocol the Push Provider use to send push message to the distributor application.
-
-## Distributor Receiving Protocol
-
-This refers to the provider push protocol except if the distributor application act as a push provider, then this refers to the provider receiving protocol.
+This is the protocol the [Application Server](#application-server) uses to send [push messages](#push-message). 
 
 ## Push Gateway
 Or Gateway
 
-This is the server or programm the application server sends push messages to with its application push protocol. 
+(e.g. [UnifiedPush-common-proxies](https://github.com/UnifiedPush/common-proxies), [Nginx](https://github.com/UnifiedPush/contrib/blob/main/gateways/matrix.md#nginx))
 
-It is used to convert the application push protocol to the provider receiving protocol. 
+The Push Gateway is used for conversion and/or proxieing of messages from [Application Server](#application-server) to the [Push Provider](#push-provider).
+If the [Application Push Protocol](#application-push-protocol) and the [Provider Receiving Protocol](#provider-receiving-protocol) are the same, and the [Application Server](#application-server) can reach the [Push Provider](#push-provider), then the gateway is not necessary.
 
-If the application push protocol and the provider receiving protocol are the same, and the application server can reach the push provider, then the gateway is not necessary, and the gateway will refer to the push provider.
+If the application server can not reach the push provider the Push Gateway can also act as a normal Proxy, even if the [application push protocol](#application-push-protocol) and the [Provider Receiving Protocol](#provider-receiving-protocol) are the same.
 
-If the application push protocol and the provider receiving protocol are the same, but the application server can not reach the push provider, then the gateway do not have to modify the request but have to forward it. In this case it can be called a proxy.
+## Provider Receiving Protocol
+
+This is the protocol the [Push Provider](#push-provider) uses to receive [push messages](#push-message).
+
+## Provider Push Protocol
+
+This is the protocol the [Push Provider](#push-provider) uses to send [push messages](#push-message) to the [Distributor Application](#distributor-application).
+
+## Distributor Receiving Protocol
+
+This is the protocol the [Distributor Application](#distributor-application) 
+uses to recive [push messages](#push-message) from the [Push Provider](#push-provider). 
+So it is the same as the [Provider Push Protocol](#provider-push-protocol), 
+except if the [Distributor Application](#distributor-application) 
+acts as the [Push Provider](#push-provider), 
+then there is no [Provider Push Protocol](#provider-push-protocol) 
+and this is just the [Provider Receiving Protocol](#provider-receiving-protocol).
 
 ## Rewrite Proxy
 
@@ -52,22 +63,28 @@ The rewrite proxy is application independant and provider dependant.
 
 ## Push Provider
 Or Provider
+
 Or Push Notification Provider
 
-This is the server that listen for incoming push messages using its provider receiving protocol and forward it to the connected phone using the provider push protocol.
+(e.g. [Gotify](https://gotify.net/), [Google FirebaseCloudMessaging](https://firebase.google.com/docs/cloud-messaging/))
+
+This is the server that listen for incoming [push messages](#Push-Message) using its [Provider Receiving Protocol](#provider-receiving-protocol) and forwards it to the connected [Distributor Application](#distributor-application) using the [Provider Push Protocol](#provider-push-protocol) .
 
 ## Distributor Application
 Or Distributor
 
-This is the application that forward push messages to the registered end user application. It is the application which is connected to the push provider.
+(e.g. [Gotify-UnifiedPush-android](https://github.com/UnifiedPush/gotify-android), [UP-FCM Distributor](https://github.com/UnifiedPush/fcm-distributor))
+
+This is the application that forwards push messages to the registered [end user Application](#end-user-application). It is the application which is connected to the [Push Provider](#push-provider).
 
 ## Connector Library
 Or Connector
-Or UnifiedPush Library
 
-This is the library used by the end user application to register for push notifications to the distributor applicaton and to receive push messages forwarded from the ditributor application.
+(e.g. the UnifiedPush Libraries ([Android](https://github.com/UnifiedPush/android-connector), [Flutter](https://github.com/UnifiedPush/flutter-connector)...))
+
+This is the library used by the [end user Application](#end-user-application) to register for and recive forwarded push notifications at the [Distributor Application](#distributor-application).
 
 ## Endpoint
 
-This is the URL of the rewrite proxy (if there is one, of the push provider else) where push messages are sent for a specific end user application, from the gateway.
+This is the URL of the [Rewrite Proxy](#rewrite-proxy) (if there is one, otherwise it is from the [Push Provider](#push-provider)) where push messages are sent to for a specific [end user Application](#end-user-application), from the [Push Gateway](#push-gateway).
 
