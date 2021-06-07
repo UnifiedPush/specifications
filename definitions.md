@@ -43,7 +43,7 @@ This is the protocol the [Push Provider](#push-provider) uses to receive [push m
 
 ## Provider Push Protocol
 
-This is the protocol the [Push Provider](#push-provider) uses to send [push messages](#push-message) to the [Distributor Application](## Distributor Application).
+This is the protocol the [Push Provider](#push-provider) uses to send [push messages](#push-message) to the [Distributor Application](#distributor-application).
 
 ## Distributor Receiving Protocol
 
@@ -57,7 +57,7 @@ and this is just the [Provider Receiving Protocol](#provider-receiving-protocol)
 
 ## Rewrite Proxy
 
-If the Provider Receiving Protocol needs anything else than the URI and a GET parameter to identify the end user application (eg. header, POST parameter) or need a special structure for POST data, then a rewrite proxy is used  to convert the identifier in a URI or in a GET parameter and to forge the POST parameter content structure.
+If the Provider Receiving Protocol needs anything else than the URI and a GET parameter to identify the end user application (eg. header, POST parameter) or need a special structure for POST data, then a rewrite proxy is used to convert the identifier in a URI or in a GET parameter and to forge the POST parameter content structure.
 
 The rewrite proxy is application independant and provider dependant.
 
