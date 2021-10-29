@@ -1,5 +1,7 @@
 # Specifications
 
+UnifiedPush Spec: AND_1.0.1
+
 ## Index
 
 * [Distributor Application](#distributor-application)
