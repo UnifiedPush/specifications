@@ -1,6 +1,6 @@
 # UnifiedPush Provider Interface
 
-UnifiedPush Spec: SERV_1.0.0
+UnifiedPush Spec: SERV_1.0.1
 
 ## Endpoint
 
@@ -19,7 +19,7 @@ Application servers or gateways SHOULD check this when registering push to avoid
 
 ### Request
 
-The pusher sends an HTTP/1.1 request to the endpoint using the POST method. The contents of the POST body will be the message received by the connector library. The length of the message MUST be between 1 byte and 4000 bytes.
+The pusher sends an HTTP request to the endpoint using the POST method. The contents of the POST body will be the message received by the connector library. The length of the message MUST be between 1 byte and 4000 bytes.
 
 
 ### Responses
