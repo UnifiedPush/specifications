@@ -49,7 +49,7 @@ Arguments MUST be, in the order below:
 
 This method does not return anything.
 
-If the app wants to remain registered, it MUST register agian.
+If the app wants to remain registered, it MUST register again.
 
 ## Distributor API
 
