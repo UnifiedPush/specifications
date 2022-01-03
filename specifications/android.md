@@ -1,6 +1,6 @@
 # Specifications
 
-UnifiedPush Spec: AND_1.0.2
+UnifiedPush Spec: AND_1.0.3
 
 ## Index
 
@@ -89,7 +89,7 @@ The distributor MUST send this action to the registered application to confirm t
 
 ### org.unifiedpush.android.connector.REGISTRATION_REFUSED
 
-The distributor MUST send this action to the registered application if the token is already registered for another application or if the distributor refuses for another reason with the 2 following extras:
+The distributor MUST send this action with the 2 following extras to the registered application if the token is already registered for another application:
 * token: the token supplied by the end user application during registration
 * message: this extra MAY be sent to gives an error message
 
