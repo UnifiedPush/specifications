@@ -1,6 +1,6 @@
 # Specifications
 
-UnifiedPush Spec: AND_1.0.2
+UnifiedPush Spec: AND_2.0.0
 
 ## Index
 
@@ -36,7 +36,6 @@ The library itself does not declare any activity, service or receiver in the man
 * org.unifiedpush.android.connector.NEW_ENDPOINT
 * org.unifiedpush.android.connector.UNREGISTERED
 * org.unifiedpush.android.connector.MESSAGE
-* org.unifiedpush.android.connector.REGISTRATION_REFUSED
 * org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 This broadcast receiver is the Messaging Broadcast Receiver.
@@ -56,7 +55,6 @@ The connector send this action to register to push messages. The intent MUST con
 
 The distributor MUST send a broadcast intent to one of the following action when it handles this action:
 * org.unifiedpush.android.connector.NEW_ENDPOINT
-* org.unifiedpush.android.connector.REGISTRATION_REFUSED
 * org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 ### org.unifiedpush.android.distributor.UNREGISTER
@@ -87,17 +85,13 @@ The distributor MUST send this action to the registered application to confirm t
 * token: the token supplied by the end user application during registration
 * endpoint: the endpoint
 
-### org.unifiedpush.android.connector.REGISTRATION_REFUSED
-
-The distributor MUST send this action to the registered application if the token is already registered for another application or if the distributor refuses for another reason with the 2 following extras:
-* token: the token supplied by the end user application during registration
-* message: this extra MAY be sent to gives an error message
-
 ### org.unifiedpush.android.connector.REGISTRATION_FAILED
 
-The distributor MUST send this action to the registered application if the registration can not be processed but it is not refused (for instance when the distributor is not connected to its provider server) with the 2 following extras:
+The distributor MUST send this action to the registered application if the token is already registered for another application or if the registration can not be processed (for instance when the distributor is not connected to its provider server) with the 2 following extras:
 * token: the token supplied by the end user application during registration
 * message: this extra MAY be sent to gives an error message
+
+The connector MUST change the connection token received with this action for the next registration.
 
 ### org.unifiedpush.android.connector.MESSAGE
 
