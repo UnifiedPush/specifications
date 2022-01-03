@@ -1,5 +1,7 @@
 # Specifications
 
+UnifiedPush Spec: DBUS_0.2.0
+
 ## Index
 
 * [Connector API](#connector-API)
@@ -71,10 +73,10 @@ When it has not registered before, the connector MUST generate a random string t
 
 The method MUST returns two strings, in the order below : 
 
-* either "NEW_ENDPOINT", "REGISTRATION_REFUSED", or "REGISTRATION_FAILED", (string)
+* "REGISTRATION_FAILED", (string)
 * a reason string that MAY be empty. (string)
 
-The first string is "NEW_ENDPOINT" if registration succeeded. It is "REGISTRATION_REFUSED" in case the registration attempt was refused, and the connector SHOULD NOT try to register again. It is "REGISTRATION_FAILED" in case the registration failed for some other reason, and the connector MAY try to register again.
+The first string is "NEW_ENDPOINT" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
 
 If registration succeeded, the distributor MUST call the connector's [org.unifiedpush.Connector1.NewEndpoint](#orgunifiedpushconnector1newendpoint-string-string--nothing) method to deliver the new push endpoint to it.
 
