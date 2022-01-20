@@ -21,8 +21,10 @@ The distributor MUST expose a broadcast receiver with the following actions:
 * org.unifiedpush.android.distributor.REGISTER
 * org.unifiedpush.android.distributor.UNREGISTER
 
-This broadcast receiver is the Registration Broadcast Receiver.
+The distributor MUST also expose the following action if it supports sending bytes messages:
+* org.unifiedpush.android.distributor.feature.bytesMessage
 
+This broadcast receiver is the Registration Broadcast Receiver.
 
 ## Connector Library
 
