@@ -15,16 +15,21 @@ UnifiedPush Spec: AND_2.0.0-beta2
 
 The distributor application MUST expose the registration broadcast receiver, allowing end user applications to register for push related messages.
 
-### Manifest
+### Common manifest
 
 The distributor MUST expose a broadcast receiver with the following actions:
 * org.unifiedpush.android.distributor.REGISTER
 * org.unifiedpush.android.distributor.UNREGISTER
 
-The distributor MUST also expose the following action if it supports sending bytes messages:
-* org.unifiedpush.android.distributor.feature.bytesMessage
-
 This broadcast receiver is the Registration Broadcast Receiver.
+
+### Optional features
+
+#### Sending bytes messages
+
+The distributor MUST expose the following action if it supports sending messages as ByteArray instead of String:
+* org.unifiedpush.android.distributor.feature.BYTES_MESSAGE
+
 
 ## Connector Library
 
@@ -42,7 +47,6 @@ The library itself does not declare any activity, service or receiver in the man
 
 This broadcast receiver is the Messaging Broadcast Receiver.
 
-
 ## Registration Broadcast Receiver
 
 The exposed broadcast receiver of the distributor application MUST handle 2 differents actions:
@@ -51,12 +55,12 @@ The exposed broadcast receiver of the distributor application MUST handle 2 diff
 
 ### org.unifiedpush.android.distributor.REGISTER
 
-The connector send this action to register to push messages. The intent MUST contain 2 extras:
+The connector sends this action to register to push messages. The intent MUST contain 2 extras:
 * application (String): with the end user application package name. The distributor MUST be able to handle many connections with a single application.
 * token (String): with a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side.
 
 It MAY be send with the following extra:
-* features (ArrayList<String>): indicate the connector supports a set of optional features. Only "bytesMessage" is currently specified.
+* features (ArrayList<String>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
 
 The distributor MUST send a broadcast intent to one of the following action when it handles this action:
 * org.unifiedpush.android.connector.NEW_ENDPOINT
@@ -92,7 +96,12 @@ The distributor MUST send this action to the registered application to confirm t
 
 ### org.unifiedpush.android.connector.REGISTRATION_FAILED
 
-The distributor MUST send this action to the registered application if the token is already registered for another application or if the registration can not be processed (for instance when the distributor is not connected to its provider server) with the 2 following extras:
+The distributor MUST send this action to the registered application if:
+* the token is already registered for another application
+* the registration can not be processed (for instance when the distributor is not connected to its provider server)
+* a requested feature is not supported by the distributor
+
+The action contains the 2 following extras:
 * token (String): the token supplied by the end user application during registration
 * message (String): this extra MAY be sent to gives an error message
 
@@ -106,10 +115,10 @@ It MUST be send with the following extra:
 * token (String): the token supplied by the end user application during registration
 
 It MUST be send with at least one of the 2 following extras:
-* message (String): the push message sent by the application server, as a string. It MUST be setted if the connector has been registered without support for bytesMessage feature. If setted, it MUST be the raw POST data received by the rewrite proxy.
-* bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MAY be ommited. If setted, it MUST be the raw POST data received by the rewrite proxy.
+* message (String): the push message sent by the application server, as a string. It MUST be set if the BYTES_MESSAGE feature was not requested during registration. If set, it MUST be the raw POST data received by the rewrite proxy.
+* bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MAY be ommited. If set, it MUST be the raw POST data received by the rewrite proxy.
 
-The connector SHOULD prefer bytesMessage if it registered with support for bytesMessage feature.
+The distributor MAY set message on top of bytesMessage if BYTES_MESSAGE feature was requested.
 
 It MAY be send with the following extra:
 * id (String): to identify the message
