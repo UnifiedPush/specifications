@@ -59,7 +59,7 @@ The connector sends this action to register to push messages. The intent MUST co
 * application (String): with the end user application package name. The distributor MUST be able to handle many connections with a single application.
 * token (String): with a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side.
 
-It MAY be send with the following extra:
+It MAY be sent with following extra:
 * features (ArrayList<String>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
 
 The distributor MUST send a broadcast intent to one of the following action when it handles this action:
@@ -92,7 +92,7 @@ There is a third action the connector SHOULD handle:
 
 The distributor MUST send this action to the registered application to confirm the registration of an end user application, when a registered application send again an action with the intent org.unifiedpush.android.distributor.REGISTER and a valid token, or when the endpoint change with the 2 following extras:
 * token (String): the token supplied by the end user application during registration
-* endpoint (String): the endpoint
+* endpoint (String): the endpoint URL
 
 ### org.unifiedpush.android.connector.REGISTRATION_FAILED
 
@@ -111,14 +111,16 @@ The connector MUST change the connection token received with this action for the
 
 The distributor MUST send this action to the registered application to forward a push message received from the provider to the end user application.
 
-It MUST be send with the following extra:
+If the BYTES_MESSAGE feature was requested, it MUST send the following extras:
 * token (String): the token supplied by the end user application during registration
+* bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MUST be the raw POST data received by the rewrite proxy.
 
-It MUST be send with at least one of the 2 following extras:
-* message (String): the push message sent by the application server, as a string. It MUST be set if the BYTES_MESSAGE feature was not requested during registration. If set, it MUST be the raw POST data received by the rewrite proxy.
-* bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MAY be ommited. If set, it MUST be the raw POST data received by the rewrite proxy.
+If the BYTES_MESSAGE feature was requested, it MAY additionally send the message as a string:
+* message (String): the push message sent by the application server, as a string.
 
-The distributor MAY set message on top of bytesMessage if BYTES_MESSAGE feature was requested.
+If the BYTES_MESSAGE feature was not requested, it MUST send the following extras:
+* token (String): the token supplied by the end user application during registration
+* message (String): the push message sent by the application server, as a string.
 
 It MAY be send with the following extra:
 * id (String): to identify the message
