@@ -4,10 +4,16 @@ UnifiedPush Spec: AND_2.0.0-beta2
 
 ## Index
 
+* [General](#general)
 * [Distributor Application](#distributor-application)
 * [Connector Library](#connector-library)
 * [Registration Broadcast Receiver](#registration-broadcast-receiver-1)
 * [Messaging Broadcast Receiver](#messaging-broadcast-receiver-1)
+
+## General
+
+All extras typed String MUST be UTF-8 encoded.
+
 
 ## Distributor Application
 
@@ -59,8 +65,9 @@ The connector sends this action to register to push messages. The intent MUST co
 * application (String): with the end user application package name. The distributor MUST be able to handle many connections with a single application.
 * token (String): with a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side.
 
-It MAY be sent with following extra:
+It MAY be sent with the following 2 extras:
 * features (ArrayList<String>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
+* message (String) : A short description of the purpose of the registration that the connector MAY show to the user.
 
 The distributor MUST send a broadcast intent to one of the following action when it handles this action:
 * org.unifiedpush.android.connector.NEW_ENDPOINT
@@ -68,7 +75,7 @@ The distributor MUST send a broadcast intent to one of the following action when
 
 ### org.unifiedpush.android.distributor.UNREGISTER
 
-The connector send this action to unregister to push messages. The intent MUST contain 1 extra:
+The connector sends this action to unregister to push messages. The intent MUST contain 1 extra:
 * token (String): the token supplied by the end user application during registration
 
 The distributor MUST send a broadcast intent to the following action when it handles this action:
@@ -103,7 +110,7 @@ The distributor MUST send this action to the registered application if:
 
 The action contains the 2 following extras:
 * token (String): the token supplied by the end user application during registration
-* message (String): this extra MAY be sent to gives an error message
+* message (String): this extra MAY be sent to give an error message
 
 The connector MUST change the connection token received with this action for the next registration.
 
