@@ -67,7 +67,7 @@ The connector sends this action to register to push messages. The intent MUST co
 
 It MAY be sent with the following 2 extras:
 * features (ArrayList<String>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
-* message (String) : a short description of the purpose of the registration that the connector MAY show to the user.
+* message (String): a short description of the purpose of the registration that the distributor MAY show to the user.
 
 The distributor MUST send a broadcast intent to one of the following action when it handles this action:
 * org.unifiedpush.android.connector.NEW_ENDPOINT
