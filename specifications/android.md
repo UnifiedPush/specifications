@@ -123,11 +123,11 @@ If the BYTES_MESSAGE feature was requested, it MUST send the following extras:
 * bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MUST be the raw POST data received by the rewrite proxy.
 
 If the BYTES_MESSAGE feature was requested, it MAY additionally send the message as a string:
-* message (String): the push message sent by the application server, as a string. This extra can't have characters with char code > 127.
+* message (String): the push message sent by the application server, as a string.
 
 If the BYTES_MESSAGE feature was not requested, it MUST send the following extras:
 * token (String): the token supplied by the end user application during registration
-* message (String): the push message sent by the application server, as a string. This extra can't have characters with char code > 127.
+* message (String): the push message sent by the application server, as a string.
 
 It MAY be send with the following extra:
 * id (String): to identify the message
