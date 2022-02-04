@@ -59,7 +59,7 @@ Distributors MUST provide a service with a name beginning with `org.unifiedpush.
 
 The distributor MUST implement the `org.unifiedpush.Distributor1` interface at the object path `/org/unifiedpush/Distributor`.
 
-### org.unifiedpush.Distributor1.Register (String, String) → (String, String)
+### org.unifiedpush.Distributor1.Register (String, String, String) → (String, String)
 
 The connector MUST call this method to register for push messages or to retreive the push endpoint.
 
@@ -67,6 +67,7 @@ Arguments MUST be, in the order below:
 
 * the service name identifying the application, (string)
 * a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side. (string)
+* a description of the app and its reason for using push notifications. This MAY be shown to the user by the distributor. (String)
 
 
 When it has not registered before, the connector MUST generate a random string to use as its token, and call this method with that token as its argument to register. At every subsequent startup of the app, it SHOULD call this method with the same token as before, to fetch the newest endpoint from the connector.
