@@ -56,6 +56,9 @@ This broadcast receiver is the Messaging Broadcast Receiver.
 The exposed broadcast receiver of the distributor application MUST handle 2 different actions:
 * org.unifiedpush.android.distributor.REGISTER
 * org.unifiedpush.android.distributor.UNREGISTER
+     
+There is a third action the distributor MAY handle:
+* org.unifiedpush.android.distributor.MESSAGE_ACK
 
 ### org.unifiedpush.android.distributor.REGISTER
 
