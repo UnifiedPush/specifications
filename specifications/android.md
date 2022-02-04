@@ -66,7 +66,7 @@ The connector sends this action to register to push messages. The intent MUST co
 * token (String): a randomly generated token to identify the registration from the connector and the distributor. It MUST be unique on distributor side.
 
 It MAY be sent with the following 2 extras:
-* features (ArrayList<String>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
+* features (ArrayList\<String\>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
 * message (String): a short description of the purpose of the registration that the distributor MAY show to the user.
 
 The distributor MUST send a broadcast intent to one of the following action when it handles this action:
