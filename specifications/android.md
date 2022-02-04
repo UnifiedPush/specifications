@@ -84,7 +84,7 @@ The distributor MUST send a broadcast intent to the following action when it han
 
 ### org.unifiedpush.android.distributor.MESSAGE_ACK
 
-The connector MUST reply with this action to the distributor with the String extra id received to acknowledge the message reception.
+Whenever the connector receives a message with the extra id it MUST reply with this action to the distributor with the String extra id received to acknowledge the message reception.
 
 
 ## Messaging Broadcast Receiver
