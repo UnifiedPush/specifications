@@ -77,6 +77,7 @@ The distributor MUST send a broadcast intent to one of the following action when
 
 The connector sends this action to unregister to push messages. The intent MUST contain 1 extra:
 * token (String): the token supplied by the end user application during registration
+* application (String): the end user application package name.
 
 The distributor MUST send a broadcast intent to the following action when it handles this action:
 * org.unifiedpush.android.connector.UNREGISTERED.
