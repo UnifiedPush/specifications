@@ -62,8 +62,8 @@ The exposed broadcast receiver of the distributor application MUST handle 2 diff
 ### org.unifiedpush.android.distributor.REGISTER
 
 The connector sends this action to register to push messages. The intent MUST contain 2 extras:
-* application (String): the end user application package name. The distributor MUST be able to handle many connections with a single application.
-* token (String): a randomly generated token to identify the connection between the connector and the distributor. It MUST be unique on distributor side.
+* application (String): the end user application package name. The distributor MUST be able to handle many registrations with a single application.
+* token (String): a randomly generated token to identify the registration from the connector and the distributor. It MUST be unique on distributor side.
 
 It MAY be sent with the following 2 extras:
 * features (ArrayList<String>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
@@ -113,7 +113,7 @@ The action contains the 2 following extras:
 * token (String): the token supplied by the end user application during registration
 * message (String): this extra MAY be sent to give an error message
 
-The connector MUST change the connection token received with this action for the next registration.
+The connector MUST change the registration token received with this action for the next registration.
 
 ### org.unifiedpush.android.connector.MESSAGE
 
