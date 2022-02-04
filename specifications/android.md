@@ -130,7 +130,10 @@ If the BYTES_MESSAGE feature was not requested, it MUST send the following extra
 * token (String): the token supplied by the end user application during registration
 * message (String): the push message sent by the application server, as a string.
 
-It MAY be send with the following extra:
+If the BYTES_MESSAGE feature was not requested, it MAY additionally send the message as a byte array:
+* bytesMessage (ByteArray): the push message sent by the application server, as a string.
+  
+It MAY be sent with the following extra:
 * id (String): to identify the message
 
 
@@ -138,6 +141,6 @@ It MAY be send with the following extra:
 
 The distributor MUST send this action to the registered application to confirm unregistration or to inform the application about unregistration.
 
-If this action is send to inform the application, the intent MUST have the following extra:
+The intent MUST have the following extra:
 * token (String): the token supplied by the end user application during registration
 
