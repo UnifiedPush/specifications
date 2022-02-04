@@ -55,7 +55,7 @@ This broadcast receiver is the Messaging Broadcast Receiver.
 
 ## Registration Broadcast Receiver
 
-The exposed broadcast receiver of the distributor application MUST handle 2 differents actions:
+The exposed broadcast receiver of the distributor application MUST handle 2 different actions:
 * org.unifiedpush.android.distributor.REGISTER
 * org.unifiedpush.android.distributor.UNREGISTER
 
@@ -135,8 +135,8 @@ If the BYTES_MESSAGE feature was not requested, it MUST send the following extra
 * message (String): the push message sent by the application server, as a string.
 
 If the BYTES_MESSAGE feature was not requested, it MAY additionally send the message as a byte array:
-* bytesMessage (ByteArray): the push message sent by the application server, as a string.
-  
+* bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MUST be the raw POST data received by the rewrite proxy.
+
 It MAY be sent with the following extra:
 * id (String): to identify the message
 
