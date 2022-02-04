@@ -89,7 +89,7 @@ Whenever the connector receives a message with the extra id it MUST reply with t
 
 ## Messaging Broadcast Receiver
 
-The exposed broadcast receiver of the distributor application MUST handle 3 differents actions:
+The exposed broadcast receiver of the connector library MUST handle 2 differents actions:
 * org.unifiedpush.android.connector.NEW_ENDPOINT
 * org.unifiedpush.android.connector.MESSAGE
 
