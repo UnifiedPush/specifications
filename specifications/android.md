@@ -1,6 +1,6 @@
 # Specifications
 
-UnifiedPush Spec: AND_2.0.0-beta2
+UnifiedPush Spec: AND_2.0.0-beta3
 
 ## Index
 
