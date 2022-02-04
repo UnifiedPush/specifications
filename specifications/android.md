@@ -14,7 +14,6 @@ UnifiedPush Spec: AND_2.0.0-beta3
 
 All extras typed String MUST be UTF-8 encoded.
 
-
 ## Distributor Application
 
 ### Registration Broadcast Receiver
@@ -35,7 +34,6 @@ This broadcast receiver is the Registration Broadcast Receiver.
 
 The distributor MUST expose the following action if it supports sending messages as ByteArray instead of String:
 * org.unifiedpush.android.distributor.feature.BYTES_MESSAGE
-
 
 ## Connector Library
 
@@ -100,7 +98,7 @@ There is a third action the connector SHOULD handle:
 The distributor MUST send this action to the registered application in the following cases:
 * confirm the registration of an end user application
 * a registered application sends an action with the intent org.unifiedpush.android.distributor.REGISTER and a token for an existing registration
-*  the endpoint changes
+* the endpoint for the application changes
 
 The intent MUST contain the following 2 extras:
 * token (String): the token supplied by the end user application during registration
@@ -123,14 +121,14 @@ The connector MUST change the registration token received with this action for t
 
 The distributor MUST send this action to the registered application to forward a push message received from the provider to the end user application.
 
-If the BYTES_MESSAGE feature was requested, it MUST send the following extras:
+If the BYTES_MESSAGE feature was requested, it MUST send the following 2 extras:
 * token (String): the token supplied by the end user application during registration
 * bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MUST be the raw POST data received by the rewrite proxy.
 
 If the BYTES_MESSAGE feature was requested, it MAY additionally send the message as a string:
 * message (String): the push message sent by the application server, as a string.
 
-If the BYTES_MESSAGE feature was not requested, it MUST send the following extras:
+If the BYTES_MESSAGE feature was not requested, it MUST send the following 2 extras:
 * token (String): the token supplied by the end user application during registration
 * message (String): the push message sent by the application server, as a string.
 
