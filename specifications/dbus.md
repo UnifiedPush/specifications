@@ -16,14 +16,14 @@ The connector MUST implement the `org.unifiedpush.Connector1` interface at the o
 
 The caller of the methods in this interface MUST NOT wait for a response from them.
 
-### org.unifiedpush.Connector1.Message (String, String, String) → nothing
+### org.unifiedpush.Connector1.Message (String, Array\<Byte\>, String) → nothing
 
 The distributor MUST call this method to send a new push message to the connector.
 
 Arguments MUST be, in the order below:
 
 * the token of the connection (string)
-* the message, which is the raw POST data received by the provider (string)
+* the message, which is the raw POST data received by the provider (Array\<Byte\>)
 * an ID identifying the message or an empty string. (string)
 
 This method does not return anything.
