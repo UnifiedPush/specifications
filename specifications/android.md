@@ -100,7 +100,7 @@ There is a third action the connector SHOULD handle:
 
 The distributor MUST send this action to the registered application in the following cases:
 * confirm the registration of an end user application
-* a registered application sends an action with the intent org.unifiedpush.android.distributor.REGISTER and a token for an existing registration
+* a registered application sends an action with the intent org.unifiedpush.android.distributor.REGISTER and a token for an existing registration. The distributor MUST also update the features associated with the registration.
 * the endpoint for the application changes
 
 The intent MUST contain the following 2 extras:
