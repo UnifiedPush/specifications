@@ -1,6 +1,6 @@
 # Specifications
 
-UnifiedPush Spec: DBUS_0.2.0
+UnifiedPush Spec: DBUS_0.3.0
 
 ## Index
 
