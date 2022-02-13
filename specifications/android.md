@@ -117,9 +117,11 @@ The distributor MUST send this action to the registered application if:
 * the registration can not be processed (for instance when the distributor is not connected to its provider server)
 * a requested feature is not supported by the distributor
 
-The action MUST contain the following 2 extras:
+The action MUST contain the following 1 extra:
 * token (String): the token supplied by the end user application during registration
-* message (String): this extra MAY be sent to give an error message
+
+The intent SHOULD contain 1 additional extra:
+* message (String): an error message describing why the registration failed
 
 The connector MUST change the registration token received with this action for the next registration.
 
