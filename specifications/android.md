@@ -125,6 +125,8 @@ The intent SHOULD contain 1 additional extra:
 
 The connector MUST change the registration token received with this action for the next registration.
 
+If a connector receives this action after it already received a NEW_ENDPOINT action for the same token then it should ignore this action.
+
 ### org.unifiedpush.android.connector.MESSAGE
 
 The distributor MUST send this action to the registered application to forward a push message received from the provider to the end user application.
