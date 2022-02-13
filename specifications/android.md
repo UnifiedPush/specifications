@@ -95,8 +95,9 @@ The exposed broadcast receiver of the connector library MUST handle 2 differents
 * org.unifiedpush.android.connector.NEW_ENDPOINT
 * org.unifiedpush.android.connector.MESSAGE
 
-There is a third action the connector SHOULD handle:
+There are 2 additional actions the connector SHOULD handle:
 * org.unifiedpush.android.connector.UNREGISTERED
+* org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 ### org.unifiedpush.android.connector.NEW_ENDPOINT
 
