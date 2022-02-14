@@ -12,7 +12,8 @@ UnifiedPush Spec: AND_2.0.0-beta3
 
 ## General
 
-All extras typed String MUST be UTF-8 encoded.
+* All extras typed String MUST be UTF-8 encoded.
+* All required extras MUST be non-null.
 
 ## Distributor Application
 
@@ -64,7 +65,7 @@ There is a third action the distributor MAY handle:
 
 The connector sends this action to register to push messages. The intent MUST contain 2 extras:
 * application (String): the end user application package name. The distributor MUST be able to handle many registrations with a single application.
-* token (String): a randomly generated token to identify the registration from the connector and the distributor. It MUST be unique on distributor side.
+* token (String): a randomly generated token to identify the registration from the connector and the distributor. It MUST be unique on distributor side and contain sufficient entropy so it cannot be guessed.
 
 It MAY be sent with the following 2 extras:
 * features (ArrayList\<String\>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
@@ -79,15 +80,12 @@ The distributor MUST send a broadcast intent to one of the following actions whe
 The connector sends this action to unregister from push messages. The intent MUST contain 1 extra:
 * token (String): the token supplied by the end user application during registration
 
-The intent SHOULD contain 1 additional extra:
-* application (String): the end user application package name.
-
-The distributor MUST send a broadcast intent to the following action when it handles this action:
-* org.unifiedpush.android.connector.UNREGISTERED.
-
 ### org.unifiedpush.android.distributor.MESSAGE_ACK
 
-Whenever the connector receives a message with the extra id it MUST reply with this action to the distributor with the String extra id received to acknowledge the message reception.
+Whenever the connector receives a message with the extra id it MUST reply with this action to the distributor.
+
+The intent MUST contain 1 extra:
+* id (String): the String extra id received with the message
 
 ## Messaging Broadcast Receiver
 
@@ -104,7 +102,7 @@ There are 2 additional actions the connector SHOULD handle:
 The distributor MUST send this action to the registered application in the following cases:
 * confirm the registration of an end user application
 * a registered application sends an action with the intent org.unifiedpush.android.distributor.REGISTER and a token for an existing registration. The distributor MUST also update the features associated with the registration.
-* the endpoint for the application changes
+* the endpoint for the application changed
 
 The intent MUST contain the following 2 extras:
 * token (String): the token supplied by the end user application during registration
@@ -151,10 +149,7 @@ It MAY be sent with the following extra:
 
 ### org.unifiedpush.android.connector.UNREGISTERED
 
-The distributor MUST send this action to the registered application to confirm unregistration (after an UNREGISTER request) or to inform the application about unregistration.
-
-If this action is sent to confirm unregistration, then the distributor MUST retrieve the target application package name using the token supplied. If no registration matching the token is found, then it SHOULD use the application received with the extra application, if it is present.
+The distributor MUST send this action to the registered application to inform it about unregistration.
 
 The intent MUST have the following extra:
-* token (String): the token supplied by the end user application during registration to inform about unregistration, or the token supplied in the extras of the UNREGISTER action to confirm unregistration.
-
+* token (String): the token supplied by the end user application during registration
