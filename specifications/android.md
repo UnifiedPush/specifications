@@ -120,7 +120,7 @@ The distributor MUST send this action to the registered application if:
 The action MUST contain the following extra:
 * token (String): the token supplied by the end user application during registration
 
-The intent SHOULD contain 1 additional extra:
+The intent MAY contain 1 additional extra:
 * message (String): an error message describing why the registration failed
 
 The connector MUST change the registration token received with this action for the next registration.
