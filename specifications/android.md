@@ -151,7 +151,9 @@ It MAY be sent with the following extra:
 
 ### org.unifiedpush.android.connector.UNREGISTERED
 
-The distributor MUST send this action to the registered application to confirm unregistration or to inform the application about unregistration. If this action was triggered by an UNREGISTER action then the distributor MUST retrieve the target application name using the token supplied. If no registration matching the token is found, then it MUST use the application received with the extra application, if it is present.
+The distributor MUST send this action to the registered application to confirm unregistration (after an UNREGISTER request) or to inform the application about unregistration.
+
+If this action is sent to confirm unregistration, then the distributor MUST retrieve the target application package name using the token supplied. If no registration matching the token is found, then it SHOULD use the application received with the extra application, if it is present.
 
 The intent MUST have the following extra:
 * token (String): the token supplied by the end user application during registration. If this action was triggered by a UNREGISTER action this is the token supplied in the extras of the triggering action.
