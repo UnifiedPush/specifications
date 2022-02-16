@@ -1,6 +1,6 @@
 # Specifications
 
-UnifiedPush Spec: AND_2.0.0-beta2
+UnifiedPush Spec: AND_2.0.0-beta3
 
 ## Index
 
@@ -12,8 +12,8 @@ UnifiedPush Spec: AND_2.0.0-beta2
 
 ## General
 
-All extras typed String MUST be UTF-8 encoded.
-
+* All extras typed String MUST be UTF-8 encoded.
+* All required extras MUST be non-null.
 
 ## Distributor Application
 
@@ -36,7 +36,6 @@ This broadcast receiver is the Registration Broadcast Receiver.
 The distributor MUST expose the following action if it supports sending messages as ByteArray instead of String:
 * org.unifiedpush.android.distributor.feature.BYTES_MESSAGE
 
-
 ## Connector Library
 
 ### Messaging Broadcast Receiver
@@ -55,49 +54,57 @@ This broadcast receiver is the Messaging Broadcast Receiver.
 
 ## Registration Broadcast Receiver
 
-The exposed broadcast receiver of the distributor application MUST handle 2 differents actions:
+The exposed broadcast receiver of the distributor application MUST handle 2 different actions:
 * org.unifiedpush.android.distributor.REGISTER
 * org.unifiedpush.android.distributor.UNREGISTER
+     
+There is a third action the distributor MAY handle:
+* org.unifiedpush.android.distributor.MESSAGE_ACK
 
 ### org.unifiedpush.android.distributor.REGISTER
 
 The connector sends this action to register to push messages. The intent MUST contain 2 extras:
-* application (String): the end user application package name. The distributor MUST be able to handle many connections with a single application.
-* token (String): a randomly generated token to identify the connection between the connector and the distributor. It MUST be unique on distributor side.
+* application (String): the end user application package name. The distributor MUST be able to handle many registrations with a single application.
+* token (String): a randomly generated token to identify the registration from the connector and the distributor. It MUST be unique on distributor side and contain sufficient entropy so it cannot be guessed.
 
 It MAY be sent with the following 2 extras:
-* features (ArrayList<String>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
+* features (ArrayList\<String\>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
 * message (String): a short description of the purpose of the registration that the distributor MAY show to the user.
 
-The distributor MUST send a broadcast intent to one of the following action when it handles this action:
+The distributor MUST send a broadcast intent to one of the following actions when it handles this action:
 * org.unifiedpush.android.connector.NEW_ENDPOINT
 * org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 ### org.unifiedpush.android.distributor.UNREGISTER
 
-The connector sends this action to unregister to push messages. The intent MUST contain 1 extra:
+The connector sends this action to unregister from push messages. The intent MUST contain 1 extra:
 * token (String): the token supplied by the end user application during registration
-
-The distributor MUST send a broadcast intent to the following action when it handles this action:
-* org.unifiedpush.android.connector.UNREGISTERED.
 
 ### org.unifiedpush.android.distributor.MESSAGE_ACK
 
-The connector MUST reply with this action to the distributor with the String extra id received to acknowledge the message reception.
+Whenever the connector receives a message with the extra id it MUST reply with this action to the distributor.
 
+The intent MUST contain 1 extra:
+* id (String): the String extra id received with the message
 
 ## Messaging Broadcast Receiver
 
-The exposed broadcast receiver of the distributor application MUST handle 3 differents actions:
+The exposed broadcast receiver of the end user application MUST handle 2 differents actions:
 * org.unifiedpush.android.connector.NEW_ENDPOINT
 * org.unifiedpush.android.connector.MESSAGE
 
-There is a third action the connector SHOULD handle:
+There are 2 additional actions the connector SHOULD handle:
 * org.unifiedpush.android.connector.UNREGISTERED
+* org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 ### org.unifiedpush.android.connector.NEW_ENDPOINT
 
-The distributor MUST send this action to the registered application to confirm the registration of an end user application, when a registered application send again an action with the intent org.unifiedpush.android.distributor.REGISTER and a valid token, or when the endpoint change with the 2 following extras:
+The distributor MUST send this action to the registered application in the following cases:
+* confirm the registration of an end user application
+* a registered application sends an action with the intent org.unifiedpush.android.distributor.REGISTER and a token for an existing registration. The distributor MUST also update the features associated with the registration.
+* the endpoint for the application changed
+
+The intent MUST contain the following 2 extras:
 * token (String): the token supplied by the end user application during registration
 * endpoint (String): the endpoint URL
 
@@ -108,35 +115,41 @@ The distributor MUST send this action to the registered application if:
 * the registration can not be processed (for instance when the distributor is not connected to its provider server)
 * a requested feature is not supported by the distributor
 
-The action contains the 2 following extras:
+The action MUST contain the following extra:
 * token (String): the token supplied by the end user application during registration
-* message (String): this extra MAY be sent to give an error message
 
-The connector MUST change the connection token received with this action for the next registration.
+The intent MAY contain 1 additional extra:
+* message (String): an error message describing why the registration failed
+
+The connector MUST change the registration token received with this action for the next registration.
+
+If a connector receives this action after it already received a NEW_ENDPOINT action for the same token then it should ignore this action.
 
 ### org.unifiedpush.android.connector.MESSAGE
 
 The distributor MUST send this action to the registered application to forward a push message received from the provider to the end user application.
 
-If the BYTES_MESSAGE feature was requested, it MUST send the following extras:
+If the BYTES_MESSAGE feature was requested, it MUST send the following 2 extras:
 * token (String): the token supplied by the end user application during registration
 * bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MUST be the raw POST data received by the rewrite proxy.
 
 If the BYTES_MESSAGE feature was requested, it MAY additionally send the message as a string:
 * message (String): the push message sent by the application server, as a string.
 
-If the BYTES_MESSAGE feature was not requested, it MUST send the following extras:
+If the BYTES_MESSAGE feature was not requested, it MUST send the following 2 extras:
 * token (String): the token supplied by the end user application during registration
 * message (String): the push message sent by the application server, as a string.
 
-It MAY be send with the following extra:
+If the BYTES_MESSAGE feature was not requested, it MAY additionally send the message as a byte array:
+* bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MUST be the raw POST data received by the rewrite proxy.
+
+It MAY be sent with the following extra:
 * id (String): to identify the message
 
 
 ### org.unifiedpush.android.connector.UNREGISTERED
 
-The distributor MUST send this action to the registered application to confirm unregistration or to inform the application about unregistration.
+The distributor MUST send this action to the registered application to inform it about unregistration.
 
-If this action is send to inform the application, the intent MUST have the following extra:
+The intent MUST have the following extra:
 * token (String): the token supplied by the end user application during registration
-
