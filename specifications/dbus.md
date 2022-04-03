@@ -67,14 +67,14 @@ Arguments MUST be, in the order below:
 
 * the service name identifying the application, (string)
 * a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side. (string)
-* a description of the app and its reason for using push notifications. This MAY be shown to the user by the distributor. (String)
+* a description of the app and its reason for using push notifications. This MAY be shown to the user by the distributor. This MAY be empty. (String)
 
 
 When it has not registered before, the connector MUST generate a random string to use as its token, and call this method with that token as its argument to register. At every subsequent startup of the app, it SHOULD call this method with the same token as before, to fetch the newest endpoint from the connector.
 
-The method MUST returns two strings, in the order below : 
+The method MUST return two strings, in the order below : 
 
-* "REGISTRATION_FAILED", (string)
+* "REGISTRATION_FAILED" or "NEW_ENDPOINT" (string)
 * a reason string that MAY be empty. (string)
 
 The first string is "NEW_ENDPOINT" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
