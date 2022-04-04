@@ -74,10 +74,10 @@ When it has not registered before, the connector MUST generate a random string t
 
 The method MUST return two strings, in the order below : 
 
-* "REGISTRATION_FAILED" or "NEW_ENDPOINT" (string)
+* "REGISTRATION_FAILED" or "REGISTRATION_SUCCEEDED" (string)
 * a reason string that MAY be empty. (string)
 
-The first string is "NEW_ENDPOINT" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
+The first string is "REGISTRATION_SUCCEEDED" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
 
 If registration succeeded, the distributor MUST call the connector's [org.unifiedpush.Connector1.NewEndpoint](#orgunifiedpushconnector1newendpoint-string-string--nothing) method to deliver the new push endpoint to it.
 
