@@ -1,6 +1,6 @@
 # Specifications
 
-UnifiedPush Spec: DBUS_0.2.0
+UnifiedPush Spec: DBUS_0.3.0
 
 ## Index
 
@@ -16,14 +16,14 @@ The connector MUST implement the `org.unifiedpush.Connector1` interface at the o
 
 The caller of the methods in this interface MUST NOT wait for a response from them.
 
-### org.unifiedpush.Connector1.Message (String, String, String) → nothing
+### org.unifiedpush.Connector1.Message (String, Array\<Byte\>, String) → nothing
 
 The distributor MUST call this method to send a new push message to the connector.
 
 Arguments MUST be, in the order below:
 
 * the token of the connection (string)
-* the message, which is the raw POST data received by the provider (string)
+* the message, which is the raw POST data received by the provider (Array\<Byte\>)
 * an ID identifying the message or an empty string. (string)
 
 This method does not return anything.
@@ -59,7 +59,7 @@ Distributors MUST provide a service with a name beginning with `org.unifiedpush.
 
 The distributor MUST implement the `org.unifiedpush.Distributor1` interface at the object path `/org/unifiedpush/Distributor`.
 
-### org.unifiedpush.Distributor1.Register (String, String) → (String, String)
+### org.unifiedpush.Distributor1.Register (String, String, String) → (String, String)
 
 The connector MUST call this method to register for push messages or to retreive the push endpoint.
 
@@ -67,16 +67,17 @@ Arguments MUST be, in the order below:
 
 * the service name identifying the application, (string)
 * a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side. (string)
+* a description of the app and its reason for using push notifications. This MAY be shown to the user by the distributor. This MAY be empty. (String)
 
 
 When it has not registered before, the connector MUST generate a random string to use as its token, and call this method with that token as its argument to register. At every subsequent startup of the app, it SHOULD call this method with the same token as before, to fetch the newest endpoint from the connector.
 
-The method MUST returns two strings, in the order below : 
+The method MUST return two strings, in the order below : 
 
-* "REGISTRATION_FAILED", (string)
+* "REGISTRATION_FAILED" or "REGISTRATION_SUCCEEDED" (string)
 * a reason string that MAY be empty. (string)
 
-The first string is "NEW_ENDPOINT" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
+The first string is "REGISTRATION_SUCCEEDED" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
 
 If registration succeeded, the distributor MUST call the connector's [org.unifiedpush.Connector1.NewEndpoint](#orgunifiedpushconnector1newendpoint-string-string--nothing) method to deliver the new push endpoint to it.
 
