@@ -28,7 +28,7 @@ The body and headers of a push response can be ignored.
 
 #### 2xx
 
-The push provider MUST return a status code from 200-299 if it successfully accepts the notification. This SHOULD be the code 202. Note that this is independent of the end-user application receiving the push.
+The push provider MUST return a status code from 200-299 if it successfully accepts the notification. This SHOULD be the code 201. Note that this is independent of the end-user application receiving the push.
 
 In this case, the distributor MUST send EXACTLY the contents of the HTTP POST request to the connector library.
 
