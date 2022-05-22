@@ -19,7 +19,7 @@ Application servers or gateways SHOULD check this when registering push to avoid
 
 ### Request
 
-The pusher sends an HTTP request to the endpoint using the POST method. The contents of the POST body will be the message received by the connector library. The length of the message MUST be between 1 byte and 4000 bytes.
+The pusher sends an HTTP request to the endpoint using the POST method. The contents of the POST body will be the message received by the connector library. The length of the message MUST be between 1 byte and 4096 bytes (inclusive).
 
 
 ### Responses
@@ -46,7 +46,7 @@ The endpoint does not exist and SHOULD NOT be used anymore. Implementing this is
 
 #### 413
 
-The push provider MAY return a 413 if the notification payload is too large. The payload length MUST be less than or equal to 4000 bytes.
+The push provider MAY return a 413 if the notification payload is too large. The payload length MUST be less than or equal to 4096 bytes.
 
 #### 429 
 
