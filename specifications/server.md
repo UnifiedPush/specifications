@@ -1,6 +1,6 @@
 # UnifiedPush Provider Interface
 
-UnifiedPush Spec: SERV_1.0.1
+UnifiedPush Spec: SERV_1.1.0
 
 ## Endpoint
 
