@@ -121,3 +121,7 @@ When you list all services that begin with `org.unifiedpush.Distributor.` on the
 ### On Application Startup
 The application should call [org.unifiedpush.Distributor1.Register](#orgunifiedpushdistributor1register-string--string-string) on every startup to request the newest endpoint URL, in case it missed this call otherwise.
 
+### D-Bus Interface Introspection XML files
+
+- [org.unifiedpush.Distributor1.xml](https://github.com/UnifiedPush/specifications/tree/main/specifications/dbus/org.unifiedpush.Distributor1.xml)
+- [org.unifiedpush.Connector1.xml](https://github.com/UnifiedPush/specifications/tree/main/specifications/dbus/org.unifiedpush.Connector1.xml)
