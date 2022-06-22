@@ -1,0 +1,20 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<!--
+    SPDX-FileCopyrightText: 2022 Volker Krause <vkrause@kde.org>
+    SPDX-License-Identifier: CC0-1.0
+-->
+<node>
+  <interface name="org.unifiedpush.Distributor1">
+    <method name="Register">
+      <arg name="serviceName" type="s" direction="in"/>
+      <arg name="token" type="s" direction="in"/>
+      <arg name="description" type="s" direction="in"/>
+      <arg name="registrationResult" type="s" direction="out"/>
+      <arg name="registrationResultReason" type="s" direction="out"/>
+    </method>
+    <method name="Unregister">
+      <arg name="token" type="s" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+  </interface>
+</node>
