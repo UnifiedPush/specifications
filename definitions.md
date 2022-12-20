@@ -61,7 +61,8 @@ The rewrite proxy is application independent and push server dependant.
 
 ## Push Server
 
-Previously: Push Provider or Provider
+Or Push Provider
+Or Provider
 
 (e.g. [ntfy server](https://ntfy.sh/), [NextPush server](https://github.com/UP-NextPush/server-app), [Google FirebaseCloudMessaging](https://firebase.google.com/docs/cloud-messaging/))
 
