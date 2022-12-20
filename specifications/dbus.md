@@ -23,7 +23,7 @@ The distributor MUST call this method to send a new push message to the connecto
 Arguments MUST be, in the order below:
 
 * the token of the connection (string)
-* the message, which is the raw POST data received by the provider (Array\<Byte\>)
+* the message, which is the raw POST data received by the push server (Array\<Byte\>)
 * an ID identifying the message or an empty string. (string)
 
 This method does not return anything.
@@ -116,7 +116,7 @@ The "--push-message" flag can be anything you want here, the point of it is just
 
 ### Choosing a distributor
 
-When you list all services that begin with `org.unifiedpush.Distributor.` on the session bus, you may get zero, one, or multiple results. If there are zero, you can't register to get push notifications. If there is one, you can simply choose that one. If there are multiple, then you can choose one of them by presenting a UI to select one provider (since the user likely knows why they have multiple different providers running). You can also get the "preferred" distributor from an environment variable, although the name and behavior of this variable has not been specced (TODO).
+When you list all services that begin with `org.unifiedpush.Distributor.` on the session bus, you may get zero, one, or multiple results. If there are zero, you can't register to get push notifications. If there is one, you can simply choose that one. If there are multiple, then you can choose one of them by presenting a UI to select one distributor (since the user likely knows why they have multiple different distributors running). You can also get the "preferred" distributor from an environment variable, although the name and behavior of this variable have not been specced (TODO).
 
 ### On Application Startup
 The application should call [org.unifiedpush.Distributor1.Register](#orgunifiedpushdistributor1register-string--string-string) on every startup to request the newest endpoint URL, in case it missed this call otherwise.
