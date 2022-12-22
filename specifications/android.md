@@ -5,7 +5,7 @@ UnifiedPush Spec: AND_2.0.0-beta3
 ## Index
 
 * [General](#general)
-* [Distributor Application](#distributor-application)
+* [Push Distributor](#push-distributor)
 * [Connector Library](#connector-library)
 * [Registration Broadcast Receiver](#registration-broadcast-receiver-1)
 * [Messaging Broadcast Receiver](#messaging-broadcast-receiver-1)
@@ -15,11 +15,11 @@ UnifiedPush Spec: AND_2.0.0-beta3
 * All extras typed String MUST be UTF-8 encoded.
 * All required extras MUST be non-null.
 
-## Distributor Application
+## Push Distributor
 
 ### Registration Broadcast Receiver
 
-The distributor application MUST expose the registration broadcast receiver, allowing end user applications to register for push related messages.
+The push distributor MUST expose the registration broadcast receiver, allowing end user applications to register for push related messages.
 
 ### Common manifest
 
@@ -54,7 +54,7 @@ This broadcast receiver is the Messaging Broadcast Receiver.
 
 ## Registration Broadcast Receiver
 
-The exposed broadcast receiver of the distributor application MUST handle 2 different actions:
+The exposed broadcast receiver of the push distributor MUST handle 2 different actions:
 * org.unifiedpush.android.distributor.REGISTER
 * org.unifiedpush.android.distributor.UNREGISTER
      
@@ -112,7 +112,7 @@ The intent MUST contain the following 2 extras:
 
 The distributor MUST send this action to the registered application if:
 * the token is already registered for another application
-* the registration can not be processed (for instance when the distributor is not connected to its provider server)
+* the registration can not be processed (for instance when the distributor is not connected to its server)
 * a requested feature is not supported by the distributor
 
 The action MUST contain the following extra:
@@ -127,7 +127,7 @@ If a connector receives this action after it already received a NEW_ENDPOINT act
 
 ### org.unifiedpush.android.connector.MESSAGE
 
-The distributor MUST send this action to the registered application to forward a push message received from the provider to the end user application.
+The distributor MUST send this action to the registered application to forward a push message received on the push server to the end user application.
 
 If the BYTES_MESSAGE feature was requested, it MUST send the following 2 extras:
 * token (String): the token supplied by the end user application during registration
