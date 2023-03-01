@@ -52,11 +52,12 @@ The endpoint does not exist and SHOULD NOT be used anymore. Implementing this is
 
 The push server MAY return a 413 if the notification payload is too large. The payload length MUST be less than or equal to 4096 bytes.
 
-#### 429 
+#### 429
 
 The push server MAY return a 429 if the endpoint is receiving too many requests. Application servers SHOULD honor limits per endpoint, not host. On receipt of a 429, the application server SHOULD slow down or risk losing notifications.
 
-#### Other 
+#### Other
+
 Any other HTTP responses mean an unknown error occurred. The push request MAY be tried later at the application server's discretion.
 
 ## Appendix: Implementation practices
