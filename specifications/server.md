@@ -6,6 +6,8 @@ UnifiedPush Spec: SERV_1.2.0
 
 The endpoint MUST be a IRI (RFC 3987) with a scheme of HTTP or HTTPS that MAY use query parameters, a path, or both to identify the push registration. An endpoint's length MUST be less than or equal to 1000 bytes.
 
+The endpoint contains an unguessabled identifier. This SHOULD be a 160 bits (20 bytes) random value URL-safe base64 encoded string.
+
 ## Discovery
 
 On sending a GET request to the full endpoint URL (including query parameters), the push server MUST return the following JSON:
