@@ -30,7 +30,7 @@ The body and headers of a push response can be ignored.
 
 #### 2xx
 
-The push server MUST return a status code 201 if it successfully accepts the notification. The application server SHOULD accept status code from 200-299 as a 201.
+The push server MUST return a status code 201 if it successfully accepts the push message. The application server SHOULD accept status code from 200-299 as a 201.
 
 The push server MUST add the header `TTL: 0` to its response. The application server MAY ignore it.
 
@@ -50,7 +50,7 @@ The endpoint does not exist and SHOULD NOT be used anymore. Implementing this is
 
 #### 413
 
-The push server MAY return a 413 if the notification payload is too large. The payload length MUST be less than or equal to 4096 bytes.
+The push server MAY return a 413 if the push message payload is too large. The payload length MUST be less than or equal to 4096 bytes.
 
 #### 429
 
