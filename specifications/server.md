@@ -1,10 +1,12 @@
 # UnifiedPush Server Interface
 
-UnifiedPush Spec: SERV_1.1.0
+UnifiedPush Spec: SERV_1.2.0
 
 ## Endpoint
 
 The endpoint MUST be a IRI (RFC 3987) with a scheme of HTTP or HTTPS that MAY use query parameters, a path, or both to identify the push registration. An endpoint's length MUST be less than or equal to 1000 bytes.
+
+The endpoint contains an unguessabled identifier. This SHOULD be a 160 bits (20 bytes) random value URL-safe base64 encoded string.
 
 ## Discovery
 
@@ -28,7 +30,9 @@ The body and headers of a push response can be ignored.
 
 #### 2xx
 
-The push server MUST return a status code from 200-299 if it successfully accepts the notification. This SHOULD be the code 201. Note that this is independent of the end-user application receiving the push.
+The push server MUST return a status code 201 if it successfully accepts the push message. The application server SHOULD accept status code from 200-299 as a 201.
+
+The push server MUST add the header `TTL: 0` to its response. The application server MAY ignore it.
 
 In this case, the distributor MUST send EXACTLY the contents of the HTTP POST request to the connector library.
 
@@ -46,13 +50,14 @@ The endpoint does not exist and SHOULD NOT be used anymore. Implementing this is
 
 #### 413
 
-The push server MAY return a 413 if the notification payload is too large. The payload length MUST be less than or equal to 4096 bytes.
+The push server MAY return a 413 if the push message payload is too large. The payload length MUST be less than or equal to 4096 bytes.
 
-#### 429 
+#### 429
 
 The push server MAY return a 429 if the endpoint is receiving too many requests. Application servers SHOULD honor limits per endpoint, not host. On receipt of a 429, the application server SHOULD slow down or risk losing notifications.
 
-#### Other 
+#### Other
+
 Any other HTTP responses mean an unknown error occurred. The push request MAY be tried later at the application server's discretion.
 
 ## Appendix: Implementation practices
