@@ -10,7 +10,7 @@ UnifiedPush Spec: DBUS_0.3.0
 
 ## Connector API
 
-The connector MUST provide a service with a name identifying a the application (standard reverse DNS style application ID, which is also used in D-Bus APIs).
+The connector MUST provide a service with a name identifying the application (standard reverse DNS style application ID, which is also used in D-Bus APIs).
 
 The connector MUST implement the `org.unifiedpush.Connector1` interface at the object path `/org/unifiedpush/Connector`.
 
