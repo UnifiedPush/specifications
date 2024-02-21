@@ -1,6 +1,6 @@
 # UnifiedPush Server Interface
 
-UnifiedPush Spec: SERV_1.2.0
+UnifiedPush Spec: SERV_1.3.0
 
 ## Endpoint
 
@@ -21,7 +21,7 @@ Application servers or gateways SHOULD check this when registering push to avoid
 
 ### Request
 
-The pusher sends an HTTP request to the endpoint using the POST method. The contents of the POST body will be the message received by the connector library. The length of the message MUST be between 1 byte and 4096 bytes (inclusive).
+The pusher sends an HTTP request to the endpoint using the POST or the PUT method. The message body of the POST or PUT request will be the message received by the connector library. The length of the message MUST be between 1 byte and 4096 bytes (inclusive).
 
 
 ### Responses
@@ -34,7 +34,7 @@ The push server MUST return a status code 201 if it successfully accepts the pus
 
 The push server MUST add the header `TTL: 0` to its response. The application server MAY ignore it.
 
-In this case, the distributor MUST send EXACTLY the contents of the HTTP POST request to the connector library.
+In this case, the distributor MUST send EXACTLY the message body of the HTTP POST or PUT request to the connector library.
 
 ### 3xx
 
