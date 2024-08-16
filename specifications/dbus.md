@@ -123,5 +123,5 @@ The application should call [org.unifiedpush.Distributor1.Register](#orgunifiedp
 
 ### D-Bus Interface Introspection XML files
 
-- [org.unifiedpush.Distributor1.xml](https://github.com/UnifiedPush/specifications/tree/main/specifications/dbus/org.unifiedpush.Distributor1.xml)
-- [org.unifiedpush.Connector1.xml](https://github.com/UnifiedPush/specifications/tree/main/specifications/dbus/org.unifiedpush.Connector1.xml)
+- [org.unifiedpush.Distributor1.xml](https://codeberg.org/UnifiedPush/specifications/src/branch/main/specifications/dbus/org.unifiedpush.Distributor1.xml)
+- [org.unifiedpush.Connector1.xml](https://codeberg.org/UnifiedPush/specifications/src/branch/main/specifications/dbus/org.unifiedpush.Connector1.xml)

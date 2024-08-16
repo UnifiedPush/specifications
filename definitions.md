@@ -34,7 +34,7 @@ This is the protocol the [Application Server](#application-server) uses to send 
 
 Or Gateway
 
-(e.g. [UnifiedPush-common-proxies](https://github.com/UnifiedPush/common-proxies), [Nginx](https://github.com/UnifiedPush/contrib/blob/main/gateways/matrix.md#nginx))
+(e.g. [UnifiedPush-common-proxies](https://codeberg.org/UnifiedPush/common-proxies), [Nginx](https://codeberg.org/UnifiedPush/contrib/blob/main/gateways/matrix.md#nginx))
 
 The Push Gateway is used for conversion and/or proxying of messages from [Application Server](#application-server) to the [Push Server](#push-server).
 If the [Application Push Protocol](#application-push-protocol) and the [Push Server Receiving Protocol](#push-server-receiving-protocol) are the same, and the [Application Server](#application-server) can reach the [Push Server](#push-server), then the gateway is not necessary.
@@ -64,7 +64,7 @@ The rewrite proxy is application independent and push server dependant.
 Or Push Provider
 Or Provider
 
-(e.g. [ntfy server](https://ntfy.sh/), [NextPush server](https://github.com/UP-NextPush/server-app), [Google FirebaseCloudMessaging](https://firebase.google.com/docs/cloud-messaging/))
+(e.g. [ntfy server](https://ntfy.sh/), [NextPush server](https://codeberg.org/NextPush/uppush), [Google FirebaseCloudMessaging](https://firebase.google.com/docs/cloud-messaging/))
 
 This is the server that listens for incoming [push messages](#push-message) using its [Push Server Receiving Protocol](#push-server-receiving-protocol) and forwards it to the connected [Push Distributor](#push-distributor) using the [Distributor Receiving Protocol](#distributor-receiving-protocol) .
 
@@ -72,7 +72,7 @@ This is the server that listens for incoming [push messages](#push-message) usin
 
 Or Distributor
 
-(e.g. [ntfy app](https://ntfy.sh), [NextPush Android](https://github.com/UP-NextPush/android), [UP-FCM Distributor](https://github.com/UnifiedPush/fcm-distributor))
+(e.g. [ntfy app](https://ntfy.sh), [NextPush Android](https://codeberg.org/NextPush/nextpush-android), [UP-FCM Distributor](https://codeberg.org/UnifiedPush/fcm-distributor))
 
 This is the application that forwards push messages to the registered [end user Application](#end-user-application). It is the application which is connected to the [Push Server](#push-server).
 
@@ -80,7 +80,7 @@ This is the application that forwards push messages to the registered [end user 
 
 Or Connector
 
-(e.g. the UnifiedPush Libraries ([Android](https://github.com/UnifiedPush/android-connector), [Flutter](https://github.com/UnifiedPush/flutter-connector)...))
+(e.g. the UnifiedPush Libraries ([Android](https://codeberg.org/UnifiedPush/android-connector), [Flutter](https://codeberg.org/UnifiedPush/flutter-connector)...))
 
 This is the library used by the [end user Application](#end-user-application) to register for and receive forwarded push notifications at the [Push Distributor](#push-distributor).
 
