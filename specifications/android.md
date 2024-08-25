@@ -83,6 +83,8 @@ The distributor SHOULD NOT create a new endpoint if a valid registration exist f
 The connector sends this action to unregister from push messages. The intent MUST contain 1 extra:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the distributor, the distributor will ignore this request.
 
+After sending this action, the end user application MUST remove the connection token from the valid tokens even if the unregistration is not acknowledged by the distributor with [org.unifiedpush.android.connector.UNREGISTERED]. The end user application MAY cache this connection token to inform the user if the unregistration is not acknowledge after some time.
+
 ### org.unifiedpush.android.distributor.MESSAGE_ACK
 
 Whenever the connector receives a message with the extra id it MUST reply with this action to the distributor to acknowledge the message's reception.
