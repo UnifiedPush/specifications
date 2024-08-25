@@ -10,7 +10,7 @@ UnifiedPush Spec: AND_2.0.0
 * [Registration Broadcast Receiver](#registration-broadcast-receiver-1)
 * [Messaging Broadcast Receiver](#messaging-broadcast-receiver-1)
 
-## General
+## Resources
 
 * All extras typed String MUST be UTF-8 encoded.
 * All required extras MUST be non-null.
