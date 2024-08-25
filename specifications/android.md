@@ -160,6 +160,19 @@ The distributor MUST send this action to the registered application to inform it
 The intent MUST have the following extra:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
 
+This is send when:
+* A connection is deleted from the distributor or the push server
+* The distributor log out of the push server
+* No message has been acknowledge with [org.unifiedpush.android.distributor.MESSAGE_ACK] within the last 30 days. The distributor MUST send a ping with [org.unifiedpush.android.connector.PING] before, to avoid unregistering a valid connection.
+
+### org.unifiedpush.android.connector.PING
+
+The distributor can send this action to the registered application to check if a registration still exists.
+
+The intent MUST have the following extra:
+* token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
+* id (String, max 100 bytes): This is the message id as defined in the [Resources]. The connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK].
+
 ## References
 
 ### Internal References
