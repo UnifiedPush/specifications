@@ -4,11 +4,28 @@ UnifiedPush Spec: AND_2.0.0
 
 ## Index
 
-* [General](#general)
-* [Push Distributor](#push-distributor)
-* [Connector Library](#connector-library)
-* [Registration Broadcast Receiver](#registration-broadcast-receiver-1)
-* [Messaging Broadcast Receiver](#messaging-broadcast-receiver-1)
+<!--toc:start-->
+- [Resources](#resources)
+- [Push Distributor](#push-distributor)
+  - [Distributor manifest](#distributor-manifest)
+  - [Optional features](#optional-features)
+    - [Sending bytes messages](#sending-bytes-messages)
+- [End User Application](#end-user-application)
+  - [End User Application Manifest](#end-user-application-manifest)
+- [Registration Broadcast Receiver](#registration-broadcast-receiver)
+  - [org.unifiedpush.android.distributor.REGISTER](#orgunifiedpushandroiddistributorregister)
+  - [org.unifiedpush.android.distributor.UNREGISTER](#orgunifiedpushandroiddistributorunregister)
+  - [org.unifiedpush.android.distributor.MESSAGE_ACK](#orgunifiedpushandroiddistributormessageack)
+- [Messaging Broadcast Receiver](#messaging-broadcast-receiver)
+  - [org.unifiedpush.android.connector.NEW_ENDPOINT](#orgunifiedpushandroidconnectornewendpoint)
+  - [org.unifiedpush.android.connector.REGISTRATION_FAILED](#orgunifiedpushandroidconnectorregistrationfailed)
+  - [org.unifiedpush.android.connector.MESSAGE](#orgunifiedpushandroidconnectormessage)
+  - [org.unifiedpush.android.connector.UNREGISTERED](#orgunifiedpushandroidconnectorunregistered)
+  - [org.unifiedpush.android.connector.PING](#orgunifiedpushandroidconnectorping)
+- [References](#references)
+  - [Internal References](#internal-references)
+  - [Normative References](#normative-references)
+<!--toc:end-->
 
 ## Resources
 
