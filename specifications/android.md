@@ -144,7 +144,14 @@ The action MUST contain the following extra:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
 
 The intent MAY contain 1 additional extra:
-* message (String): an error message describing why the registration failed
+* reason (String): the type of error causing the registration fail.
+
+The reason MUST be either:
+* "INTERNAL_ERROR": This is a generic error type, the connector can try again later
+* "NETWORK": The registration failed because of missing network connection, try again when network is back.
+* "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in.
+* "UNSUPPORTED_FEATURES": If the end user application request a feature the distributor doesn't support, the distributor respond with this reason. It MUST include another extras:
+  * features (ArrayList\<String\>), with the list of unsupported requested features.
 
 The connector MUST change the registration token received with this action for the next registration.
 
