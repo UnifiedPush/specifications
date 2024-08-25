@@ -87,8 +87,11 @@ The connector sends this action to unregister from push messages. The intent MUS
 
 Whenever the connector receives a message with the extra id it MUST reply with this action to the distributor to acknowledge the message's reception.
 
-The intent MUST contain 1 extra:
+The intent MUST contain 2 extras:
+* token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the distributor, the distributor will ignore this request.
 * id (String, max 100 bytes): This is the message id as defined in the [Resources].
+
+A distributor MAY retry to send a message that has not been acknowledged.
 
 ## Messaging Broadcast Receiver
 
