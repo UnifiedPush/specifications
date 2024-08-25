@@ -37,6 +37,7 @@ UnifiedPush Spec: AND_2.0.0
 * Message Id: This is an id to identify a message from the distributor to the connector. If present, the connector must acknowledge the message to the distributor (with [org.unifiedpush.android.distributor.MESSAGE_ACK]). This is a string of maximum 100 bytes. To prevent an application to acknowledge another application's message, the distributor SHOULD either:
   * Use unique token which contain sufficient entropy so it cannot be guessed; UUIDv4 ([RFC9562]) is suggested.
   * Save this id linked to the connection token, so a same id could be send to 2 different applications but one cannot acknowledge for the other.
+* Push message: This is an array of bytes sent by the application server to the push server. The distributor sends this message to the end user application. It MUST be the raw POST data received by the push server (or the rewrite proxy if present). This size is between 1 and 4096 bytes (inclusive).
 
 ## Push Distributor
 
@@ -52,10 +53,7 @@ This broadcast receiver is the Registration Broadcast Receiver.
 
 ### Optional features
 
-#### Sending bytes messages
-
-The distributor MUST expose the following action if it supports sending messages as ByteArray instead of String:
-* org.unifiedpush.android.distributor.feature.BYTES_MESSAGE
+Some additionnal features may be added in the future. The distributor who implements it MUST expose the action linked to the feature.
 
 ## End User Application
 
@@ -164,19 +162,9 @@ If a connector receives this action after it already received a NEW_ENDPOINT act
 
 The distributor MUST send this action to the registered application to forward a push message received on the push server to the end user application.
 
-If the BYTES_MESSAGE feature was requested, it MUST send the following 2 extras:
+The distributor MUST send the following 2 extras:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
-* bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MUST be the raw POST data received by the rewrite proxy.
-
-If the BYTES_MESSAGE feature was requested, it MAY additionally send the message as a string:
-* message (String): the push message sent by the application server, as a string.
-
-If the BYTES_MESSAGE feature was not requested, it MUST send the following 2 extras:
-* token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
-* message (String): the push message sent by the application server, as a string.
-
-If the BYTES_MESSAGE feature was not requested, it MAY additionally send the message as a byte array:
-* bytesMessage (ByteArray): the push message sent by the application server, as an array of bytes. It MUST be the raw POST data received by the rewrite proxy.
+* bytesMessage (ByteArray): This is the push message as defined in the [Resources].
 
 It MAY be sent with the following extra:
 * id (String, max 100 bytes): This is the message id as defined in the [Resources]. If present, the connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK].
