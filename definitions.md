@@ -7,6 +7,7 @@
 This is the server that hosts the application.
 
 ## End User Application
+or User Agent
 
 (e.g. [FluffyChat](https://fluffychat.im/), [Fedilab](https://fedilab.app/), [Tox Push Message App](https://github.com/zoff99/tox_push_msg_app))
 
@@ -71,6 +72,7 @@ This is the server that listens for incoming [push messages](#push-message) usin
 ## Push Distributor
 
 Or Distributor
+Or Push Service
 
 (e.g. [ntfy app](https://ntfy.sh), [NextPush Android](https://codeberg.org/NextPush/nextpush-android), [UP-FCM Distributor](https://codeberg.org/UnifiedPush/fcm-distributor))
 
