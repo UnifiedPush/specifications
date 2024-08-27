@@ -171,6 +171,16 @@ The distributor MUST send the following 2 extras:
 It MAY be sent with the following extra:
 * id (String, max 100 bytes): This is the message id as defined in the [Resources]. If present, the connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK].
 
+The distributor SHOULD follow the push message urgency as defined in [RFC8030], section 5.3. If the push server does not send an urgency header, the urgency is considered as normal. Else, only messages more urgent than the minimum urgency SHOULD be send to the end user application. The minimum urgency depending on the device state is as follow, in order of increasing urgency:
+
+| Urgency  | Device State                | Example Application                         |
+|----------|-----------------------------|---------------------------------------------|
+| very-low | On power and Wi-Fi          | Advertisements                              |
+| low      | On either power or Wi-Fi    | Topic updates                               |
+| normal   | On neither power nor Wi-Fi  | Chat or Calendar Message                    |
+| high     | Low battery                 | Incoming phone call or time-sensitive alert |
+
+
 
 ### org.unifiedpush.android.connector.UNREGISTERED
 
@@ -213,3 +223,4 @@ The intent MUST have the following extra:
 [SEC 1]: https://www.secg.org/sec1-v2.pdf "SEC 1: Elliptic Curve Cryptography"
 [RFC7515]: https://www.rfc-editor.org/rfc/rfc7515 "JSON Web Signature (JWS)"
 [RFC9562]: https://www.rfc-editor.org/rfc/rfc9562 "Universally Unique IDentifiers (UUIDs)"
+[RFC8030]: https://www.rfc-editor.org/rfc/rfc8030 "Universally Unique IDentifiers (UUIDs)"
