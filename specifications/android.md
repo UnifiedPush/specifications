@@ -102,6 +102,8 @@ The connector sends this action to unregister from push messages. The intent MUS
 
 After sending this action, the end user application MUST remove the connection token from the valid tokens even if the unregistration is not acknowledged by the distributor with [org.unifiedpush.android.connector.UNREGISTERED]. The end user application MAY cache this connection token to inform the user if the unregistration is not acknowledge after some time.
 
+The distributor MUST send [org.unifiedpush.android.distributor.UNREGISTER] when the unregistration is being processed right after the unregistration request. If the distributor can't process the unregistration right after the unregistration request, for instance if the distributor can't reach its push server, the distributor MUST send [org.unifiedpush.android.distributor.UNREGISTER] when the required information to delete the endpoint have been saved, and process the unregistration when possible.
+
 ### org.unifiedpush.android.distributor.MESSAGE_ACK
 
 Whenever the connector receives a message with the extra id it MUST reply with this action to the distributor to acknowledge the message's reception.
