@@ -194,19 +194,22 @@ The intent MUST have the following extra:
 This is send when:
 * A connection is deleted from the distributor or the push server
 * The distributor log out of the push server
-* No message has been acknowledge with [org.unifiedpush.android.distributor.MESSAGE_ACK] within the last 30 days. The distributor MUST send a ping with [org.unifiedpush.android.connector.PING] before, to avoid unregistering a valid connection.
-
-### org.unifiedpush.android.connector.PING
-
-The distributor can send this action to the registered application to check if a registration still exists.
-
-The intent MUST have the following extra:
-* token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
-* id (String, max 100 bytes): This is the message id as defined in the [Resources]. The connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK].
+* No message has been acknowledge with [org.unifiedpush.android.distributor.MESSAGE_ACK] within the last 30 days. The distributor MUST send a ping with [org.unifiedpush.android.connector.NEW_ENDPOINT] before, to avoid unregistering a valid connection.
 
 ## References
 
 ### Internal References
+
+[Resources]
+[Registration Broadcast Receiver]
+[Messaging Broadcast Receiver]
+[org.unifiedpush.android.distributor.REGISTER]
+[org.unifiedpush.android.distributor.UNREGISTER]
+[org.unifiedpush.android.distributor.MESSAGE_ACK]
+[org.unifiedpush.android.connector.NEW_ENDPOINT]
+[org.unifiedpush.android.connector.REGISTRATION_FAILED]
+[org.unifiedpush.android.connector.MESSAGE]
+[org.unifiedpush.android.connector.UNREGISTERED]
 
 [Resources]: #resources
 [Registration Broadcast Receiver]: #registration-broadcast-receiver
@@ -220,6 +223,11 @@ The intent MUST have the following extra:
 [org.unifiedpush.android.connector.UNREGISTERED]: #orgunifiedpushandroidconnectorunregistered
 
 ### Normative References
+
+[SEC 1] SEC 1: Elliptic Curve Cryptography
+[RFC7515] JSON Web Signature (JWS)
+[RFC9562] Universally Unique IDentifiers (UUIDs)
+[RFC8030] Universally Unique IDentifiers (UUIDs)
 
 [SEC 1]: https://www.secg.org/sec1-v2.pdf "SEC 1: Elliptic Curve Cryptography"
 [RFC7515]: https://www.rfc-editor.org/rfc/rfc7515 "JSON Web Signature (JWS)"
