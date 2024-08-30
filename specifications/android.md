@@ -161,7 +161,7 @@ The reason MUST be either:
 
 The connector MUST change the registration token received with this action for the next registration.
 
-If a connector receives this action after it already received a NEW_ENDPOINT action for the same token then it should ignore this action.
+If a connector receives this action after it already received a NEW_ENDPOINT action for the same token then it MUST ignore this action.
 
 ### org.unifiedpush.android.connector.MESSAGE
 
