@@ -21,7 +21,6 @@ UnifiedPush Spec: AND_2.0.0
   - [org.unifiedpush.android.connector.REGISTRATION_FAILED](#orgunifiedpushandroidconnectorregistrationfailed)
   - [org.unifiedpush.android.connector.MESSAGE](#orgunifiedpushandroidconnectormessage)
   - [org.unifiedpush.android.connector.UNREGISTERED](#orgunifiedpushandroidconnectorunregistered)
-  - [org.unifiedpush.android.connector.PING](#orgunifiedpushandroidconnectorping)
 - [References](#references)
   - [Internal References](#internal-references)
   - [Normative References](#normative-references)
@@ -135,6 +134,9 @@ The intent MUST contain the following 2 extras:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
 * endpoint (String): the endpoint URL
 
+It MAY be sent with the following extra:
+* id (String, max 100 bytes): This is the message id as defined in the [Resources]. If present, the connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK].
+
 ### org.unifiedpush.android.connector.REGISTRATION_FAILED
 
 The distributor MUST send this action to the registered application if:
@@ -216,7 +218,6 @@ The intent MUST have the following extra:
 [org.unifiedpush.android.connector.REGISTRATION_FAILED]: #orgunifiedpushandroidconnectorregistrationfailed
 [org.unifiedpush.android.connector.MESSAGE]: #orgunifiedpushandroidconnectormessage
 [org.unifiedpush.android.connector.UNREGISTERED]: #orgunifiedpushandroidconnectorunregistered
-[org.unifiedpush.android.connector.PING]: #orgunifiedpushandroidconnectorping
 
 ### Normative References
 
