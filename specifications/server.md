@@ -8,15 +8,6 @@ The endpoint MUST be a IRI (RFC 3987) with a scheme of HTTP or HTTPS that MAY us
 
 The endpoint contains an unguessabled identifier. This SHOULD be a 160 bits (20 bytes) random value URL-safe base64 encoded string.
 
-## Discovery
-
-On sending a GET request to the full endpoint URL (including query parameters), the push server MUST return the following JSON:
-```json
-{"unifiedpush":{"version":1}}
-```
-
-Application servers or gateways SHOULD check this when registering push to avoid SSRF.
-
 ## Push
 
 ### Request
