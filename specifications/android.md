@@ -38,6 +38,8 @@ UnifiedPush Spec: AND_2.0.0
   * Use unique token which contain sufficient entropy so it cannot be guessed; UUIDv4 ([RFC9562]) is suggested.
   * Save this id linked to the connection token, so a same id could be send to 2 different applications but one cannot acknowledge for the other.
 * Push message: This is an array of bytes sent by the application server to the push server. The distributor sends this message to the end user application. It MUST be the raw POST data received by the push server (or the rewrite proxy if present). This size is between 1 and 4096 bytes (inclusive).
+* Endpoint: This is the URL of the push resource as defined by [RFC8030]. This url point to the push server and is distributed to the end user application by the distributor. This MUST be at most 1000 bytes.
+* Pending endpoint: This is an endpoint that hasn't been acknowledged by the end user application.
 
 ## Push Distributor
 
@@ -99,6 +101,8 @@ The distributor SHOULD check the application contained in the extra is installed
 
 The distributor MAY limit the number of allowed registrations per application. This limit SHOULD be over 1000. If the limit is reached, the distributor should inform the user and the next registration fail.
 
+The distributor MAY limit the number of pending endpoint, as defined in the [Resources]. This is defined under [org.unifiedpush.android.connector.NEW_ENDPOINT] section.
+
 ### org.unifiedpush.android.distributor.UNREGISTER
 
 The connector sends this action to unregister from push messages. The intent MUST contain 1 extra:
@@ -137,10 +141,16 @@ The distributor MUST send this action to the registered application in the follo
 
 The intent MUST contain the following 2 extras:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
-* endpoint (String): the endpoint URL
+* endpoint (String): the endpoint URL as defined in the [Resources].
 
 It MAY be sent with the following extra:
-* id (String, max 100 bytes): This is the message id as defined in the [Resources]. If present, the connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK].
+* id (String, max 100 bytes): This is the message id as defined in the [Resources]. If present, the connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK]. An endpoint that hasn't been acknowledge (with [org.unifiedpush.android.distributor.MESSAGE_ACK]) is considered as a pending endpoint, as defined in the [Resources].
+
+#### Pending endpoints
+
+A distributor MAY remove pending endpoints, as defined in the [Resources], that haven't receive any [org.unifiedpush.android.distributor.MESSAGE_ACK] within 30 seconds after the new endpoint intent. If the distributor removes the endpoint, it MUST send [org.unifiedpush.android.connector.UNREGISTERED] to the end user application.
+
+A distributor MAY limit the number of pending endpoints per applications. This limit SHOULD be over 30 per application. If the distributor limits the number of pending endpoint and receive a registration request ([org.unifiedpush.android.distributor.REGISTER]) while this limit is reached, it MUST send [org.unifiedpush.android.connector.REGISTRATION_FAILED] with the reason "TOO_MANY_PENDING_REQUESTS".
 
 ### org.unifiedpush.android.connector.REGISTRATION_FAILED
 
@@ -159,6 +169,7 @@ The reason MUST be either:
 * "INTERNAL_ERROR": This is a generic error type, the connector can try again later
 * "NETWORK": The registration failed because of missing network connection, try again when network is back.
 * "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason.
+* "TOO_MANY_PENDING_REQUESTS": The distributor implements a limit of concurrent pending endpoints, as defined in the [Resources], and this limit has been reached. The end user application SHOULD wait 30 seconds before trying again or wait to acknowledge at least one received endpoint before continuing.
 * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
 * "UNSUPPORTED_FEATURES": If the end user application request a feature the distributor doesn't support, the distributor respond with this reason. It MUST include another extras:
   * features (ArrayList\<String\>), with the list of unsupported requested features.
