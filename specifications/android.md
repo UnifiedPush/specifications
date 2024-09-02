@@ -95,6 +95,10 @@ The distributor MUST send a broadcast intent to one of the following actions whe
 
 The distributor SHOULD NOT create a new endpoint if a valid registration exist for the token and nothing has been updated.
 
+The distributor SHOULD check the application contained in the extra is installed on the device and exposes UnifiedPush actions in its manifest. If the application is not installed or do not expose the actions, a warning about unusual activity may be shown to the user, and the registration MUST be ignored.
+
+The distributor MAY limit the number of allowed registrations per application. This limit SHOULD be over 1000. If the limit is reached, the distributor should inform the user and the next registration fail.
+
 ### org.unifiedpush.android.distributor.UNREGISTER
 
 The connector sends this action to unregister from push messages. The intent MUST contain 1 extra:
@@ -154,7 +158,7 @@ The intent MAY contain 1 additional extra:
 The reason MUST be either:
 * "INTERNAL_ERROR": This is a generic error type, the connector can try again later
 * "NETWORK": The registration failed because of missing network connection, try again when network is back.
-* "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in.
+* "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason.
 * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
 * "UNSUPPORTED_FEATURES": If the end user application request a feature the distributor doesn't support, the distributor respond with this reason. It MUST include another extras:
   * features (ArrayList\<String\>), with the list of unsupported requested features.
