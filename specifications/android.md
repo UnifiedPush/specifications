@@ -243,9 +243,9 @@ This is send when:
 [SEC 1] SEC 1: Elliptic Curve Cryptography
 [RFC7515] JSON Web Signature (JWS)
 [RFC9562] Universally Unique IDentifiers (UUIDs)
-[RFC8030] Universally Unique IDentifiers (UUIDs)
+[RFC8030] Generic Event Delivery Using HTTP Push
 
 [SEC 1]: https://www.secg.org/sec1-v2.pdf "SEC 1: Elliptic Curve Cryptography"
 [RFC7515]: https://www.rfc-editor.org/rfc/rfc7515 "JSON Web Signature (JWS)"
 [RFC9562]: https://www.rfc-editor.org/rfc/rfc9562 "Universally Unique IDentifiers (UUIDs)"
-[RFC8030]: https://www.rfc-editor.org/rfc/rfc8030 "Universally Unique IDentifiers (UUIDs)"
+[RFC8030]: https://www.rfc-editor.org/rfc/rfc8030 "Generic Event Delivery Using HTTP Push"
