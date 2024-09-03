@@ -37,7 +37,7 @@ UnifiedPush Spec: AND_2.0.0
 * Message Id: This is an id to identify a message from the distributor to the connector. If present, the connector must acknowledge the message to the distributor (with [org.unifiedpush.android.distributor.MESSAGE_ACK]). This is a string of maximum 100 bytes. To prevent an application to acknowledge another application's message, the distributor SHOULD either:
   * Use unique token which contain sufficient entropy so it cannot be guessed; UUIDv4 ([RFC9562]) is suggested.
   * Save this id linked to the connection token, so a same id could be send to 2 different applications but one cannot acknowledge for the other.
-* Push message: This is an array of bytes sent by the application server to the push server. The distributor sends this message to the end user application. It MUST be the raw POST data received by the push server (or the rewrite proxy if present). This size is between 1 and 4096 bytes (inclusive).
+* Push message: This is an array of bytes sent by the application server to the push server. The distributor sends this message to the end user application. It MUST be the raw POST data received by the push server (or the rewrite proxy if present). The message MUST be an encrypted content that follows [RFC8291]. Its size is between 1 and 4096 bytes (inclusive).
 * Endpoint: This is the URL of the push resource as defined by [RFC8030]. This url point to the push server and is distributed to the end user application by the distributor. This MUST be at most 1000 bytes.
 * Pending endpoint: This is an endpoint that hasn't been acknowledged by the end user application.
 
@@ -245,9 +245,11 @@ This is send when:
 [RFC9562] Universally Unique IDentifiers (UUIDs)
 [RFC8030] Generic Event Delivery Using HTTP Push
 [RFC8292] Voluntary Application Server Identification (VAPID) for Web Push
+[RFC8291] Message Encryption for Web Push
 
 [SEC 1]: https://www.secg.org/sec1-v2.pdf "SEC 1: Elliptic Curve Cryptography"
 [RFC7515]: https://www.rfc-editor.org/rfc/rfc7515 "JSON Web Signature (JWS)"
 [RFC9562]: https://www.rfc-editor.org/rfc/rfc9562 "Universally Unique IDentifiers (UUIDs)"
 [RFC8030]: https://www.rfc-editor.org/rfc/rfc8030 "Generic Event Delivery Using HTTP Push"
 [RFC8292]: https://www.rfc-editor.org/rfc/rfc8292 "Voluntary Application Server Identification (VAPID) for Web Push"
+[RFC8291]: https://www.rfc-editor.org/rfc/rfc8291 "Message Encryption for Web Push"
