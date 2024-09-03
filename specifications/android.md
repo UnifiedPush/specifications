@@ -40,6 +40,7 @@ UnifiedPush Spec: AND_2.0.0
 * Push message: This is an array of bytes (ByteArray) sent by the application server to the push server. The distributor sends this message to the end user application. It MUST be the raw POST data received by the push server (or the rewrite proxy if present). The message MUST be an encrypted content that follows [RFC8291]. Its size is between 1 and 4096 bytes (inclusive).
 * Endpoint: This is the URL of the push resource as defined by [RFC8030]. This url point to the push server and is distributed to the end user application by the distributor. This MUST be at most 1000 bytes.
 * Pending endpoint: This is an endpoint that hasn't been acknowledged by the end user application.
+* Short description of the registration: This is a string send by the end user application during registration describing the registration purpose (eg. the account name of the application) the distributor may show on its user interface. It is at most 100 bytes long string.
 
 ## Push Distributor
 
@@ -88,7 +89,7 @@ The connector sends this action to register to push messages. The intent MUST co
 
 It MAY be sent with one or more of the following 3 extras:
 * features (ArrayList\<String\>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
-* message (String): a short description of the purpose of the registration that the distributor MAY show to the user.
+* message (String): this is the short description of the registration as defined in the [Resources], that the distributor MAY show to the user.
 * vapid (String, 87 bytes):  a VAPID public key as defined in the [Resources]. Some distributors MAY require a valid VAPID key, and response with [org.unifiedpush.android.connector.REGISTRATION_FAILED] if it is not present.
 
 The distributor MUST send a broadcast intent to one of the following actions when it handles this action:
