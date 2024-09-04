@@ -88,4 +88,4 @@ This is the library used by the [end user Application](#end-user-application) to
 
 ## Endpoint
 
-This is the URL of the [Rewrite Proxy](#rewrite-proxy) (if there is one, otherwise it is from the [Push Server](#push-server)) where push messages are sent to for a specific [end user Application](#end-user-application), from the [Push Gateway](#push-gateway).
+This is the URL of the Push Resource as defined for Web Push ([RFC8030](https://www.rfc-editor.org/rfc/rfc8030#section-2)) which is the URL of the [Rewrite Proxy](#rewrite-proxy) (if there is one, otherwise it is from the [Push Server](#push-server)) where push messages are sent to for a specific [end user Application](#end-user-application), from the [Push Gateway](#push-gateway).
