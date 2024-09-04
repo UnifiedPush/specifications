@@ -8,8 +8,6 @@ UnifiedPush Spec: AND_2.0.0
 - [Resources](#resources)
 - [Push Distributor](#push-distributor)
   - [Distributor manifest](#distributor-manifest)
-  - [Optional features](#optional-features)
-    - [Sending bytes messages](#sending-bytes-messages)
 - [End User Application](#end-user-application)
   - [End User Application Manifest](#end-user-application-manifest)
 - [Registration Broadcast Receiver](#registration-broadcast-receiver)
@@ -54,10 +52,6 @@ The push distributor MUST expose a broadcast receiver with the following actions
 
 This broadcast receiver is the Registration Broadcast Receiver.
 
-### Optional features
-
-Some additionnal features may be added in the future. The distributor who implements it MUST expose the action linked to the feature.
-
 ## End User Application
 
 The end user application MUST expose the [Messaging Broadcast Receiver], allowing the distributor to send push related messages.
@@ -87,8 +81,7 @@ The connector sends this action to register to push messages. The intent MUST co
 * application (String): the end user application package name. The distributor MUST be able to handle many registrations with a single application.
 * token (String): This is the connection token as defined in the [Resources]. This is where a new token is used for the first time.
 
-It MAY be sent with one or more of the following 3 extras:
-* features (ArrayList\<String\>): indicate the connector is requesting a set of optional features to be enabled. It MUST be the qualified name of the action declared to advertise this feature. The connector MUST check that the action is declared before requesting an optional feature.
+It MAY be sent with one or more of the following 2 extras:
 * message (String): this is the short description of the registration as defined in the [Resources], that the distributor MAY show to the user.
 * vapid (String, 87 bytes):  a VAPID public key as defined in the [Resources]. Some distributors MAY require a valid VAPID key, and response with [org.unifiedpush.android.connector.REGISTRATION_FAILED] if it is not present.
 
@@ -137,7 +130,7 @@ There are 2 additional actions the connector SHOULD handle:
 
 The distributor MUST send this action to the registered application in the following cases:
 * confirm the registration of an end user application
-* a registered application sends an action with the intent [org.unifiedpush.android.distributor.REGISTER] and a token for an existing registration. The distributor MUST also update the features associated with the registration.
+* a registered application sends an action with the intent [org.unifiedpush.android.distributor.REGISTER] and a token for an existing registration.
 * the endpoint for the application changed
 
 The intent MUST contain the following 2 extras:
@@ -172,8 +165,6 @@ The reason MUST be either:
 * "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason.
 * "TOO_MANY_PENDING_REQUESTS": The distributor implements a limit of concurrent pending endpoints, as defined in the [Resources], and this limit has been reached. The end user application SHOULD wait 30 seconds before trying again or wait to acknowledge at least one received endpoint before continuing.
 * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
-* "UNSUPPORTED_FEATURES": If the end user application request a feature the distributor doesn't support, the distributor respond with this reason. It MUST include another extras:
-  * features (ArrayList\<String\>), with the list of unsupported requested features.
 
 The connector MUST change the registration token received with this action for the next registration.
 
