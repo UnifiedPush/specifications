@@ -52,6 +52,16 @@ Arguments MUST be, in the order below:
 
 This method does not return anything.
 
+The distributor SHOULD follow the push message urgency as defined in [RFC8030], section 5.3. If the push server does not send an urgency header, the urgency is considered as normal. Else, only messages more urgent than the minimum urgency SHOULD be send to the end user application. The minimum urgency depending on the device state is as follow, in order of increasing urgency:
+
+| Urgency  | Device State                | Example Application                         |
+|----------|-----------------------------|---------------------------------------------|
+| very-low | On power and Wi-Fi          | Advertisements                              |
+| low      | On either power or Wi-Fi    | Topic updates                               |
+| normal   | On neither power nor Wi-Fi  | Chat or Calendar Message                    |
+| high     | Low battery                 | Incoming phone call or time-sensitive alert |
+
+
 ### org.unifiedpush.Connector1.NewEndpoint (String, String) → nothing
 
 The distributor MUST call this method to inform the connector of the endpoint URL, both after registering for the first time, and if the endpoint changes afterwards.
