@@ -6,6 +6,7 @@ UnifiedPush Spec: AND_3.0.0
 
 <!--toc:start-->
 - [Resources](#resources)
+- [Overview](#overview)
 - [Push Distributor](#push-distributor)
   - [Distributor manifest](#distributor-manifest)
 - [End User Application](#end-user-application)
@@ -41,6 +42,47 @@ UnifiedPush Spec: AND_3.0.0
 * Push message: This is an array of bytes (ByteArray) sent by the application server to the push server. The distributor sends this message to the end user application. It MUST be the raw POST data received by the push server (or the rewrite proxy if present). The message MUST be an encrypted content that follows [RFC8291]. Its size is between 1 and 4096 bytes (inclusive).
 * Endpoint: This is the URL of the push resource as defined by [RFC8030]. This url point to the push server and is distributed to the end user application by the distributor. This MUST be at most 1000 bytes.
 * Short description of the registration: This is a string send by the end user application during registration describing the registration purpose (eg. the account name of the application) the distributor may show on its user interface. It is at most 100 bytes long string.
+
+## Overview
+
+Bellow, some usual events of the lifecycle of a connection between the end user application and the distrbutor:
+
+AS: the application server
+C: the end user application (with a _connector_)
+D: the distributor
+PS: the push server (connected to D)
+
+1. C and D link each other
+    1. C->D: distributor.LINK (extra: application)
+    2. C<-D: connector.LINKED (extra: auth)
+2. C request one or more registration, auth is always the same, token is different for each registration.
+    1. C->D: [org.unifiedpush.android.distributor.REGISTER] (extra: auth, token)
+    2. C<-D: [org.unifiedpush.android.connector.NEW_ENDPOINT] (extra: token, endpoint, id)
+    3. C->D: [org.unifiedpush.android.distributor.MESSAGE_ACK] (extra: token, id)
+    4. C sends the endpoint to AS
+3. From time to time, like every time the application starts, C register to D to avoid inconsistent state. C<->D follows the same steps under point 2., using the already used token.
+4. AS sends a push message
+    1. AS sends webpush request to PS, and PS follows to D
+    2. C<-D: [org.unifiedpush.android.connector.MESSAGE] (extra: token, bytesMessage, id)
+    3. C->D: [org.unifiedpush.android.distributor.MESSAGE_ACK] (extra: token, id)
+5. C unregister a registration
+    1. C->D: [org.unifiedpush.android.distributor.UNREGISTER] (extra: token)
+    2. C removes the token, may put it in waitlist to check unregistration status
+    3. C<-D: [org.unifiedpush.android.connector.UNREGISTERED] (extra: token)
+5. D. checks a registration with C. that hasn't be used for weeks (~ping):
+    1. C<-D: [org.unifiedpush.android.connector.NEW_ENDPOINT] (extra: token, endpoint, id)
+    2. C->D: [org.unifiedpush.android.distributor.MESSAGE_ACK] (extra: token, id)
+6. C. hasn't acknowledge any message nor ping (point 5.) since 30days, or the user logout of its distributor, D unregister the registration:
+    1. C<-D: [org.unifiedpush.android.connector.UNREGISTERED] (extra: token)
+7. C. tries to register but the registration fail
+    1. C->D: [org.unifiedpush.android.distributor.REGISTER] (extra: auth, token)
+    2. C<-D: [org.unifiedpush.android.connector.REGISTRATION_FAILED] (extra: token, reason)
+    3. reason may be:
+        1. "INTERNAL_ERROR": C can try again directly to register (point 2.)
+        2. "UNAUTH": C tries to register with an unknown auth token, C must send a link request (point 1.) and try again to register with the new auth token (point 2.)
+        3. "NETWORK": C waits for the network to be back and try again to register (point 2.)
+        4. "ACTION_REQUIRED": D is waiting for a user interaction. It can show a notification to inform the user. C can try again to register (point 2.) when the user is back on C.
+        5. "VAPID_REQUIRED": If C supports VAPID, it can retry directly to register with a VAPID key (point 2.), else C inform the user they can't use this disributor because it requires a server feature the application doesn't support.
 
 ## Push Distributor
 
