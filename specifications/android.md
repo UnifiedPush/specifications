@@ -160,9 +160,9 @@ The intent MAY contain 1 additional extra:
 * reason (String): the type of error causing the registration fail.
 
 The reason MUST be either:
-* "INTERNAL_ERROR": This is a generic error type, the connector can try again later
+* "INTERNAL_ERROR": This is a generic error type, the connector can try again directly.
 * "NETWORK": The registration failed because of missing network connection, try again when network is back.
-* "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason.
+* "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason. The distributor MUST send this reason if the direct sending of a new registration will fail and this is not due to a network problem.
 * "TOO_MANY_PENDING_REQUESTS": The distributor implements a limit of concurrent pending endpoints, as defined in the [Resources], and this limit has been reached. The end user application SHOULD wait 30 seconds before trying again or wait to acknowledge at least one received endpoint before continuing.
 * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
 
