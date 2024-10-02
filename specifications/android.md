@@ -104,6 +104,7 @@ The end user application MUST expose the [Messaging Broadcast Receiver], allowin
 ### End User Application Manifest
 
 The end user application MUST expose a broadcast receiver with the following actions:
+* [org.unifiedpush.android.connector.LINKED]
 * [org.unifiedpush.android.connector.NEW_ENDPOINT]
 * [org.unifiedpush.android.connector.UNREGISTERED]
 * [org.unifiedpush.android.connector.MESSAGE]
