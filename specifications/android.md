@@ -103,7 +103,7 @@ The end user application MUST expose the [Messaging Broadcast Receiver], allowin
 
 ### End User Application Manifest
 
-The library itself does not declare any activity, service or receiver in the manifest. The end user application integrating the library MUST expose a broadcast receiver with the following actions:
+The end user application MUST expose a broadcast receiver with the following actions:
 * [org.unifiedpush.android.connector.NEW_ENDPOINT]
 * [org.unifiedpush.android.connector.UNREGISTERED]
 * [org.unifiedpush.android.connector.MESSAGE]
