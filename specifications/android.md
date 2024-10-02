@@ -95,7 +95,7 @@ The push distributor MUST expose a broadcast receiver with the following actions
 * [org.unifiedpush.android.distributor.REGISTER]
 * [org.unifiedpush.android.distributor.UNREGISTER]
 
-This broadcast receiver is the Registration Broadcast Receiver.
+This broadcast receiver is the [Registration Broadcast Receiver].
 
 ## End User Application
 
@@ -110,7 +110,7 @@ The end user application MUST expose a broadcast receiver with the following act
 * [org.unifiedpush.android.connector.MESSAGE]
 * [org.unifiedpush.android.connector.REGISTRATION_FAILED]
 
-This broadcast receiver is the Messaging Broadcast Receiver.
+This broadcast receiver is the [Messaging Broadcast Receiver].
 
 ## Registration Broadcast Receiver
 
