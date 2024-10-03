@@ -149,6 +149,7 @@ The end user application SHOULD only send this action the first time it tries to
 
 The connector sends this action to register to push messages. The intent MUST contain 2 extras:
 * auth_token (String): this is the auth token as defined in the [Resources]. It has been received with the previous [org.unifiedpush.android.connector.LINKED] intent.
+* application (String): the end user application package name. It used by the distributor to send [org.unifiedpush.android.connector.REGISTRATION_FAILED] with reason UNAUTH.
 * token (String): this is the connection token as defined in the [Resources]. This is where a new token is used for the first time.
 
 The distributor MUST be able to handle many registrations with a single application.
