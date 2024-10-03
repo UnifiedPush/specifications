@@ -55,8 +55,8 @@ D: the distributor
 PS: the push server (connected to D)
 
 1. C and D link each other
-    1. C->D: distributor.LINK (extra: application, link_token)
-    2. C<-D: connector.LINKED (extra: auth_token, link_token)
+    1. C->D: [org.unifiedpush.android.distributor.LINK] (extra: application, link_token)
+    2. C<-D: [org.unifiedpush.android.connector.LINKED] (extra: auth_token, link_token)
 2. C request one or more registration, auth is always the same, token is different for each registration.
     1. C->D: [org.unifiedpush.android.distributor.REGISTER] (extra: auth_token, token)
     2. C<-D: [org.unifiedpush.android.connector.NEW_ENDPOINT] (extra: token, endpoint, id)
