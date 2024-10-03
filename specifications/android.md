@@ -22,6 +22,7 @@ UnifiedPush Spec: AND_3.0.0
   - [org.unifiedpush.android.connector.REGISTRATION_FAILED](#orgunifiedpushandroidconnectorregistrationfailed)
   - [org.unifiedpush.android.connector.MESSAGE](#orgunifiedpushandroidconnectormessage)
   - [org.unifiedpush.android.connector.UNREGISTERED](#orgunifiedpushandroidconnectorunregistered)
+- [Service to raise to the foreground](#service-to-raise-to-the-foreground)
 - [References](#references)
   - [Internal References](#internal-references)
   - [Normative References](#normative-references)
@@ -99,7 +100,7 @@ This broadcast receiver is the [Registration Broadcast Receiver].
 
 ## End User Application
 
-The end user application MUST expose the [Messaging Broadcast Receiver], allowing the distributor to send push related messages.
+The end user application MUST expose the [Messaging Broadcast Receiver], allowing the distributor to send push related messages. It also MUST expose a service the distributor MAY bind to to raise the application to the foreground.
 
 ### End User Application Manifest
 
@@ -111,6 +112,9 @@ The end user application MUST expose a broadcast receiver with the following act
 * [org.unifiedpush.android.connector.REGISTRATION_FAILED]
 
 This broadcast receiver is the [Messaging Broadcast Receiver].
+
+The end user application MUST expose a [Service to raise to the foreground] with the following action:
+* [org.unifiedpush.android.connector.RAISE_TO_FOREGROUND]
 
 ## Registration Broadcast Receiver
 
@@ -258,7 +262,11 @@ The distributor SHOULD follow the push message urgency as defined in [RFC8030], 
 | normal   | On neither power nor Wi-Fi  | Chat or Calendar Message                    |
 | high     | Low battery                 | Incoming phone call or time-sensitive alert |
 
-
+The distrbutor MUST raise the application to the foreground importance for 5 seconds when sending this intent. There is different way to achieve this:
+* By using privileged functions if the distributor is installed as a System application. For instance:
+  * By sending the broadcast intent with the broadcastOption `setTemporaryAppAllowlist`
+  * By calling the `PowerExemptionManager`'s `addToTemporaryAllowList`
+* By binding with foreground importance to the [Service to raise to the foreground] exposed by the end user application
 
 ### org.unifiedpush.android.connector.UNREGISTERED
 
@@ -272,6 +280,13 @@ This is send when:
 * The distributor log out of the push server
 * No message has been acknowledge with [org.unifiedpush.android.distributor.MESSAGE_ACK] within the last 30 days. The distributor MUST send a ping with [org.unifiedpush.android.connector.NEW_ENDPOINT] before, to avoid unregistering a valid connection.
 
+## Service to raise to the foreground
+
+The end user application MUST expose a service with the following action:
+* [org.unifiedpush.android.connector.RAISE_TO_FOREGROUND]
+
+The distributor MAY bind to this service during 5 seconds when sending a message to raise the application to the foreground. This allows the application to start a foreground service from the background without battery unrestriction.
+
 ## References
 
 ### Internal References
@@ -279,6 +294,7 @@ This is send when:
 [Resources]
 [Registration Broadcast Receiver]
 [Messaging Broadcast Receiver]
+[Service to raise to the foreground]
 [org.unifiedpush.android.distributor.LINK]
 [org.unifiedpush.android.distributor.REGISTER]
 [org.unifiedpush.android.distributor.UNREGISTER]
@@ -292,6 +308,7 @@ This is send when:
 [Resources]: #resources
 [Registration Broadcast Receiver]: #registration-broadcast-receiver
 [Messaging Broadcast Receiver]: #messaging-broadcast-receiver
+[Service to raise to the foreground]: #service-to-raise-to-the-foreground
 [org.unifiedpush.android.distributor.LINK]: #orgunifiedpushandroiddistributorlink
 [org.unifiedpush.android.distributor.REGISTER]: #orgunifiedpushandroiddistributorregister
 [org.unifiedpush.android.distributor.UNREGISTER]: #orgunifiedpushandroiddistributorunregister
