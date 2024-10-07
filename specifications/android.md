@@ -55,7 +55,7 @@ PS: the push server (connected to D)
     1. C: Request the default application for the deep link `unifiedpush://link`
     2. D: [Link Activity] opens and set result to RESULT_OK with a pending intent (extra: pi)
 2. C request one or more registration, the token is different for each registration.
-    1. C->D: [org.unifiedpush.android.distributor.REGISTER] (extra: token, pi)
+    1. C->D: [org.unifiedpush.android.distributor.REGISTER] SDK<24: (extra: token, pi) SDK>=24: (extra: token, flag: FLAG_SHARE_IDENTITY)
     2. C<-D: [org.unifiedpush.android.connector.NEW_ENDPOINT] (extra: token, endpoint, id)
     3. C->D: [org.unifiedpush.android.distributor.MESSAGE_ACK] (extra: token, id)
     4. C sends the endpoint to AS
@@ -124,9 +124,12 @@ There is a 4th action the distributor SHOULD handle:
 
 ### org.unifiedpush.android.distributor.REGISTER
 
-The connector sends this action to register to push messages. The intent MUST contain 2 extras:
-* pi (PendingIntent): an IMMUTABLE pending intent requesting a broadcast to a dummy application (`org.unifiedpush.dummy_app`). This pending intent is used to get the package name of the end user application.
+The connector sends this action to register to push messages. The intent MUST contain the following extra:
 * token (String): this is the connection token as defined in the [Resources]. This is where a new token is used for the first time.
+
+If the application runs on SDK 34 or above, the broadcast message MUST be send with broadcast option flag FLAG_SHARE_IDENTITY.
+Else, the intent MUST contain the following extra:
+* pi (PendingIntent): an IMMUTABLE pending intent requesting a broadcast to a dummy application (`org.unifiedpush.dummy_app`). This pending intent is used to get the package name of the end user application.
 
 The distributor MUST be able to handle many registrations with a single application.
 
