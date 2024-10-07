@@ -55,7 +55,7 @@ D: the distributor
 PS: the push server (connected to D)
 
 1. C enables Unifiedpush for the first time
-    1. C: Request the default application for the deeplink `unifiedpush://link`
+    1. C: Request the default application for the deep link `unifiedpush://link`
     2. D: [Link Activity] opens and set result to RESULT_OK with the auth token (extra: auth_token)
 2. C request one or more registration, auth is always the same, token is different for each registration.
     1. C->D: [org.unifiedpush.android.distributor.REGISTER] (extra: auth_token, token)
@@ -91,7 +91,7 @@ PS: the push server (connected to D)
 
 ## Push Distributor
 
-The push distributor MUST expose the [Registration Broadcast Receiver], allowing end user applications to register for push related messages. It also MUST expose an activity that can be requested by end user applications using the deeplink `unifiedpush://link`; It allows user to set a default distributor and to use the system UI to select the distributor.
+The push distributor MUST expose the [Registration Broadcast Receiver], allowing end user applications to register for push related messages. It also MUST expose an activity that can be requested by end user applications using the deep link `unifiedpush://link`; It allows user to set a default distributor and to use the system UI to select the distributor.
 
 ### Distributor manifest
 
@@ -187,11 +187,11 @@ A distributor MAY retry to send a message that has not been acknowledged.
 
 ## Link Activity
 
-The distributor exposes an activity the end user application can request using the deeplink `unifiedpush://link`.
+The distributor exposes an activity the end user application can request using the deep link `unifiedpush://link`.
 
 This allows user to set a default distributor and to use the system UI to select the distributor. End user applications SHOULD use this method to link to a distributor when selecting a distributor for the first time, for instance when the user login to the application, or when UnifiedPush is enabled.
 
-End user applications MUST NOT rely on the default application opening the deeplink when the users want to select manually their distributor.
+End user applications MUST NOT rely on the default application opening the deep link when the users want to select manually their distributor.
 
 This activity MUST have an intent filter for incoming links with the following features:
 * The intent action is `android.intent.action.VIEW`
