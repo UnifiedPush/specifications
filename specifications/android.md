@@ -244,7 +244,7 @@ The intent MUST contain the following 2 extras:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
 * endpoint (String): the endpoint URL as defined in the [Resources].
 
-It MAY be sent with the following extra:
+It SHOULD be sent with the following extra:
 * id (String, max 100 bytes): This is the message id as defined in the [Resources]. If present, the connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK].
 
 A distributor MAY remove endpoints that haven't receive any [org.unifiedpush.android.distributor.MESSAGE_ACK] within 30 seconds after the new endpoint intent. If the distributor removes the endpoint, it MUST send [org.unifiedpush.android.connector.UNREGISTERED] to the end user application.
@@ -259,7 +259,7 @@ The distributor MUST send this action to the registered application if:
 The action MUST contain the following extra:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
 
-The intent MAY contain 1 additional extra:
+The intent SHOULD contain 1 additional extra:
 * reason (String): the type of error causing the registration fail.
 
 The reason MUST be either:
@@ -281,7 +281,7 @@ The distributor MUST send the following 2 extras:
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the connector, the connector will ignore this request.
 * bytesMessage (ByteArray): This is the push message as defined in the [Resources].
 
-It MAY be sent with the following extra:
+It SHOULD be sent with the following extra:
 * id (String, max 100 bytes): This is the message id as defined in the [Resources]. If present, the connector MUST response with [org.unifiedpush.android.distributor.MESSAGE_ACK].
 
 The distributor SHOULD follow the push message urgency as defined in [RFC8030], section 5.3. If the push server does not send an urgency header, the urgency is considered as normal. Else, only messages more urgent than the minimum urgency SHOULD be send to the end user application. The minimum urgency depending on the device state is as follow, in order of increasing urgency:
