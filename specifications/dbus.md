@@ -111,7 +111,7 @@ Arguments MUST be, in the order below:
 
 When it has not registered before, the connector MUST generate a random string to use as its token, and call this method with that token as its argument to register. At every subsequent startup of the app, it SHOULD call this method with the same token as before, to fetch the newest endpoint from the connector.
 
-The method MUST return two strings, in the order below : 
+The method MUST return two strings, in the order below :
 
 * "REGISTRATION_FAILED" or "REGISTRATION_SUCCEEDED". "REGISTRATION_SUCCEEDED" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
 * a reason string that MUST be:
