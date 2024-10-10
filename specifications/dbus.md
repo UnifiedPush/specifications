@@ -158,6 +158,10 @@ After processing the push notification (and e.g. sending out a desktop notificat
 Note that for GUI apps the activation by the DBus daemon should not open any user visible windows, it should be in "daemon" mode waiting for any DBus calls. If your application already supports DBus activation as described in the
 [XDG Desktop entry specification][] you likely don't need to do anything.
 
+#### Notes for applications using GTK
+
+For GTK/GLib based applications see [DBus launching in GNOME's wiki][]. The `<command line arguments>` in this case is `--gapplication-service`. You should invoke `g_appliction_hold()` after the first request from the distributor to ensure the application keeps running long enough to process all the requests. When done processing the push notifications invoke `g_application_release()`. This will allow the application to shut down again until the next push notification arrives or the user clicks on a desktop notification.
+
 ### Choosing a distributor
 
 When you list all services that begin with `org.unifiedpush.Distributor.` on the session bus, you may get zero, one, or multiple results. If there are zero, you can't register to get push notifications. If there is one, you can simply choose that one. If there are multiple, then you can choose one of them by presenting a UI to select one distributor (since the user likely knows why they have multiple different distributors running). You can also get the "preferred" distributor from an environment variable, although the name and behavior of this variable have not been specced (TODO).
@@ -204,5 +208,7 @@ The application should call [org.unifiedpush.Distributor1.Register] on every sta
 ### Informative References
 
 [DBus daemon manpage] The DBus daemon manpage
+[DBus launching in GNOME's wiki] Setting up an application for D-Bus Launching in GNOME's wiki
 
 [DBus daemon manpage]: https://dbus.freedesktop.org/doc/dbus-daemon.1.html
+[DBus launching in GNOME's wiki]: https://wiki.gnome.org/HowDoI/DBusApplicationLaunching
