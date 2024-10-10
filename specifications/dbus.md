@@ -143,19 +143,20 @@ When a connector first wants to register, it should fetch all service names curr
 
 On subsequent startups, the connector should call [org.unifiedpush.Distributor1.Register] with the *same* token, and store the new endpoint returned, if it has changed. The connector should also implement the [org.unifiedpush.Connector1.NewEndpoint] method to receive notification about a changed endpoint from the distributor at any time.
 
-### D-Bus Activation
+### D-Bus Service
 
-The application should provide an activatable D-Bus service, so that it can be activated by a new push message when it is not running.
-
-To have your service be "activatable", so that the distributor can send it push messages while it's not running and it'll automatically start up, your app should install a D-Bus service file inside one of the D-Bus session service directories. These usually include `/usr/share/dbus-1/services/` and `$XDG_RUNTIME_DIR/dbus-1/services/`, `$XDG_DATA_DIR/dbus-1/services/`, and so on, or if you're packaging in a Flatpak for example, `/app/share/dbus-1/services/`. (See the D-Bus docs for the full info.) The file should be named after your app ID, for example `tld.yourdomain.YourApp.service`, and look like the following:
+The application must provide a DBus service file so the DBus daemon can activate it as a service on the session bus when the distributor invokes any of the above methods. For the location of the service file see the [DBus daemon manpage][], typical locations are `/usr/share/dbus-1/services/` and for Flatpaks `/app/share/dbus-1/services/`. The name of the service file needs to match the well known bus name of your application (usually the app ID)  with `.service` appended. If your app has the app ID `tld.yourdomain.YourApp` the service file `tld.yourdomain.YourApp.service` would look like:
 
 ```
 [D-BUS Service]
 Name=tld.domain.YourApp
-Exec=/usr/bin/yourapp --push-message
+Exec=/usr/bin/yourapp <command line arguments>
 ```
 
-The "--push-message" flag can be anything you want here, the point of it is just that when this command is executed, it starts up in an "invisible" or "background" way so that it doesn't jump into the user's face just because a push message arrived. Instead of a command line flag, this could be an environment variable (`env SOME_VARIABLE=1 /usr/bin/yourapp`). It would be a good idea to end the process after "doing its thing" in the background (for example sending a desktop notification), so that the app does not stay running forever in the background after receiving one notification.
+After processing the push notification (and e.g. sending out a desktop notification to notify the user) the application should terminate again.
+
+Note that for GUI apps the activation by the DBus daemon should not open any user visible windows, it should be in "daemon" mode waiting for any DBus calls. If your application already supports DBus activation as described in the
+[XDG Desktop entry specification][] you likely don't need to do anything.
 
 ### Choosing a distributor
 
@@ -190,6 +191,7 @@ The application should call [org.unifiedpush.Distributor1.Register] on every sta
 [RFC8030] Generic Event Delivery Using HTTP Push
 [RFC8292] Voluntary Application Server Identification (VAPID) for Web Push
 [RFC8291] Message Encryption for Web Push
+[XDG Desktop entry specification] XDG Desktop entry specification
 
 [SEC 1]: https://www.secg.org/sec1-v2.pdf "SEC 1: Elliptic Curve Cryptography"
 [RFC7515]: https://www.rfc-editor.org/rfc/rfc7515 "JSON Web Signature (JWS)"
@@ -197,3 +199,10 @@ The application should call [org.unifiedpush.Distributor1.Register] on every sta
 [RFC8030]: https://www.rfc-editor.org/rfc/rfc8030 "Generic Event Delivery Using HTTP Push"
 [RFC8292]: https://www.rfc-editor.org/rfc/rfc8292 "Voluntary Application Server Identification (VAPID) for Web Push"
 [RFC8291]: https://www.rfc-editor.org/rfc/rfc8291 "Message Encryption for Web Push"
+[XDG Desktop entry specification]: https://specifications.freedesktop.org/desktop-entry-spec/latest/dbus.html
+
+### Informative References
+
+[DBus daemon manpage] The DBus daemon manpage
+
+[DBus daemon manpage]: https://dbus.freedesktop.org/doc/dbus-daemon.1.html
