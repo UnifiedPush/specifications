@@ -131,6 +131,8 @@ If the application runs on SDK 34 or above, the broadcast message MUST be send w
 Else, the intent MUST contain the following extra:
 * pi (PendingIntent): an IMMUTABLE pending intent requesting a broadcast to a dummy application (`org.unifiedpush.dummy_app`). This pending intent is used to get the package name of the end user application.
 
+Therefore, a distributor installed on a device that supports application targeting SDK lower than 34 MUST implement the resolution using the PendingIntent. When receiving a broadcast without shared identify, with PendingIntent, the distributor SHOULD check that the requesting application targets a SDK lower than 34.
+
 The distributor MUST be able to handle many registrations with a single application.
 
 It MAY be sent with one or more of the following 2 extras:
