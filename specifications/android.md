@@ -290,16 +290,27 @@ The distributor MAY bind to this service during 5 seconds when sending a message
 ### Internal References
 
 [Resources]
+
 [Registration Broadcast Receiver]
+
 [Link Activity]
+
 [Messaging Broadcast Receiver]
+
 [Service to raise to the foreground]
+
 [org.unifiedpush.android.distributor.REGISTER]
+
 [org.unifiedpush.android.distributor.UNREGISTER]
+
 [org.unifiedpush.android.distributor.MESSAGE_ACK]
+
 [org.unifiedpush.android.connector.NEW_ENDPOINT]
+
 [org.unifiedpush.android.connector.REGISTRATION_FAILED]
+
 [org.unifiedpush.android.connector.MESSAGE]
+
 [org.unifiedpush.android.connector.UNREGISTERED]
 
 [Resources]: #resources
@@ -318,10 +329,15 @@ The distributor MAY bind to this service during 5 seconds when sending a message
 ### Normative References
 
 [SEC 1] SEC 1: Elliptic Curve Cryptography
+
 [RFC7515] JSON Web Signature (JWS)
+
 [RFC9562] Universally Unique IDentifiers (UUIDs)
+
 [RFC8030] Generic Event Delivery Using HTTP Push
+
 [RFC8292] Voluntary Application Server Identification (VAPID) for Web Push
+
 [RFC8291] Message Encryption for Web Push
 
 [SEC 1]: https://www.secg.org/sec1-v2.pdf "SEC 1: Elliptic Curve Cryptography"
