@@ -7,6 +7,7 @@
 This is the server that hosts the application.
 
 ## End User Application
+or User Agent
 
 (e.g. [FluffyChat](https://fluffychat.im/), [Fedilab](https://fedilab.app/), [Tox Push Message App](https://github.com/zoff99/tox_push_msg_app))
 
@@ -71,6 +72,7 @@ This is the server that listens for incoming [push messages](#push-message) usin
 ## Push Distributor
 
 Or Distributor
+Or Push Service
 
 (e.g. [ntfy app](https://ntfy.sh), [NextPush Android](https://codeberg.org/NextPush/nextpush-android), [UP-FCM Distributor](https://codeberg.org/UnifiedPush/fcm-distributor))
 
@@ -86,4 +88,4 @@ This is the library used by the [end user Application](#end-user-application) to
 
 ## Endpoint
 
-This is the URL of the [Rewrite Proxy](#rewrite-proxy) (if there is one, otherwise it is from the [Push Server](#push-server)) where push messages are sent to for a specific [end user Application](#end-user-application), from the [Push Gateway](#push-gateway).
+This is the URL of the Push Resource as defined for Web Push ([RFC8030](https://www.rfc-editor.org/rfc/rfc8030#section-2)) which is the URL of the [Rewrite Proxy](#rewrite-proxy) (if there is one, otherwise it is from the [Push Server](#push-server)) where push messages are sent to for a specific [end user Application](#end-user-application), from the [Push Gateway](#push-gateway).
