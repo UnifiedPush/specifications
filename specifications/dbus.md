@@ -61,7 +61,6 @@ The distributor SHOULD follow the push message urgency as defined in [RFC8030], 
 | normal   | On neither power nor Wi-Fi  | Chat or Calendar Message                    |
 | high     | Low battery                 | Incoming phone call or time-sensitive alert |
 
-
 ### org.unifiedpush.Connector1.NewEndpoint (String, String) → nothing
 
 The distributor MUST call this method to inform the connector of the endpoint URL, both after registering for the first time, and if the endpoint changes afterwards.
@@ -169,7 +168,6 @@ The application should call [org.unifiedpush.Distributor1.Register] on every sta
 
 - [org.unifiedpush.Distributor1.xml](https://codeberg.org/UnifiedPush/specifications/src/branch/main/specifications/dbus/org.unifiedpush.Distributor1.xml)
 - [org.unifiedpush.Connector1.xml](https://codeberg.org/UnifiedPush/specifications/src/branch/main/specifications/dbus/org.unifiedpush.Connector1.xml)
-
 
 ## References
 
