@@ -67,6 +67,7 @@ The distributor SHOULD follow the push message urgency as defined in [RFC8030], 
 The distributor MUST call this method to inform the connector of the endpoint URL, both after registering for the first time, and if the endpoint changes afterwards.
 
 The distributor MUST call this method in the following cases:
+
 * the end user application requested a registration ([org.unifiedpush.Distributor1.Register]) with a token it uses for the first time, and the registration succeed
 * the end user application requested a registration ([org.unifiedpush.Distributor1.Register]) with a token it is already using
 * the endpoint for the registration changed
@@ -128,6 +129,7 @@ If registration succeeded, the distributor MUST call the connector's [org.unifie
 The connector MUST call this method to unregister for push messages.
 
 Arguments MUST be:
+
 * the token of the connection (string).
 
 The method does not return anything.
