@@ -162,6 +162,7 @@ The "--push-message" flag can be anything you want here, the point of it is just
 When you list all services that begin with `org.unifiedpush.Distributor.` on the session bus, you may get zero, one, or multiple results. If there are zero, you can't register to get push notifications. If there is one, you can simply choose that one. If there are multiple, then you can choose one of them by presenting a UI to select one distributor (since the user likely knows why they have multiple different distributors running). You can also get the "preferred" distributor from an environment variable, although the name and behavior of this variable have not been specced (TODO).
 
 ### On Application Startup
+
 The application should call [org.unifiedpush.Distributor1.Register] on every startup to request the newest endpoint URL, in case it missed this call otherwise.
 
 ### D-Bus Interface Introspection XML files
