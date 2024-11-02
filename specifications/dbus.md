@@ -5,20 +5,28 @@ UnifiedPush Spec: DBUS_0.3.0
 ## Index
 
 <!--toc:start-->
-- [Resources](#resources)
-- [Connector API](#connector-api)
-  - [org.unifiedpush.Connector1.Message (String, Array\<Byte\>, String) → nothing](#orgunifiedpushconnector1message-string-arraybyte-string-nothing)
-  - [org.unifiedpush.Connector1.NewEndpoint (String, String) → nothing](#orgunifiedpushconnector1newendpoint-string-string-nothing)
-  - [org.unifiedpush.Connector1.Unregistered (String) → nothing](#orgunifiedpushconnector1unregistered-string-nothing)
-- [Distributor API](#distributor-api)
-  - [org.unifiedpush.Distributor1.Register (String, String, String) → (String, String)](#orgunifiedpushdistributor1register-string-string-string-string-string)
-  - [org.unifiedpush.Distributor1.Unregister (String) → nothing](#orgunifiedpushdistributor1unregister-string-nothing)
-- [Appendix: Implementation practices](#appendix-implementation-practices)
-  - [Registration](#registration)
-  - [D-Bus Activation](#d-bus-activation)
-  - [Choosing a distributor](#choosing-a-distributor)
-  - [On Application Startup](#on-application-startup)
-  - [D-Bus Interface Introspection XML files](#d-bus-interface-introspection-xml-files)
+
+* [Index](#index)
+* [Resources](#resources)
+* [Connector API](#connector-api)
+    * [org.unifiedpush.Connector1.Message (String, Array\<Byte\>, String) → nothing](#orgunifiedpushconnector1message-string-arraybyte-string-nothing)
+    * [org.unifiedpush.Connector1.NewEndpoint (String, String) → nothing](#orgunifiedpushconnector1newendpoint-string-string-nothing)
+    * [org.unifiedpush.Connector1.Unregistered (String) → nothing](#orgunifiedpushconnector1unregistered-string-nothing)
+* [Distributor API](#distributor-api)
+    * [org.unifiedpush.Distributor1.Register (String, String, String, String) → (String, String)](#orgunifiedpushdistributor1register-string-string-string-string-string-string)
+    * [org.unifiedpush.Distributor1.Unregister (String) → nothing](#orgunifiedpushdistributor1unregister-string-nothing)
+* [Appendix: Implementation practices](#appendix-implementation-practices)
+    * [Registration](#registration)
+    * [D-Bus Service](#d-bus-service)
+        * [Notes for applications using GTK](#notes-for-applications-using-gtk)
+    * [Choosing a distributor](#choosing-a-distributor)
+    * [On Application Startup](#on-application-startup)
+    * [D-Bus Interface Introspection XML files](#d-bus-interface-introspection-xml-files)
+* [References](#references)
+    * [Internal References](#internal-references)
+    * [Normative References](#normative-references)
+    * [Informative References](#informative-references)
+
 <!--toc:end-->
 
 ## Resources
@@ -115,11 +123,11 @@ The method MUST return two strings, in the order below :
 
 * "REGISTRATION_FAILED" or "REGISTRATION_SUCCEEDED". "REGISTRATION_SUCCEEDED" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
 * a reason string that MUST be:
-  * empty if the registration succeeded
-  * "INTERNAL_ERROR": This is a generic error type, the connector can try again later
-  * "NETWORK": The registration failed because of missing network connection, try again when network is back.
-  * "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason.
-  * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
+    * empty if the registration succeeded
+    * "INTERNAL_ERROR": This is a generic error type, the connector can try again later
+    * "NETWORK": The registration failed because of missing network connection, try again when network is back.
+    * "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason.
+    * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
 
 If registration succeeded, the distributor MUST call the connector's [org.unifiedpush.Connector1.NewEndpoint] method to deliver the new push endpoint to it.
 
@@ -145,9 +153,9 @@ On subsequent startups, the connector should call [org.unifiedpush.Distributor1.
 
 ### D-Bus Service
 
-The application must provide a DBus service file so the DBus daemon can activate it as a service on the session bus when the distributor invokes any of the above methods. For the location of the service file see the [DBus daemon manpage][], typical locations are `/usr/share/dbus-1/services/` and for Flatpaks `/app/share/dbus-1/services/`. The name of the service file needs to match the well known bus name of your application (usually the app ID)  with `.service` appended. If your app has the app ID `tld.yourdomain.YourApp` the service file `tld.yourdomain.YourApp.service` would look like:
+The application must provide a DBus service file so the DBus daemon can activate it as a service on the session bus when the distributor invokes any of the above methods. For the location of the service file see the [DBus daemon manpage], typical locations are `/usr/share/dbus-1/services/` and for Flatpaks `/app/share/dbus-1/services/`. The name of the service file needs to match the well known bus name of your application (usually the app ID)  with `.service` appended. If your app has the app ID `tld.yourdomain.YourApp` the service file `tld.yourdomain.YourApp.service` would look like:
 
-```
+```ini
 [D-BUS Service]
 Name=tld.domain.YourApp
 Exec=/usr/bin/yourapp <command line arguments>
@@ -156,11 +164,11 @@ Exec=/usr/bin/yourapp <command line arguments>
 After processing the push notification (and e.g. sending out a desktop notification to notify the user) the application should terminate again.
 
 Note that for GUI apps the activation by the DBus daemon should not open any user visible windows, it should be in "daemon" mode waiting for any DBus calls. If your application already supports DBus activation as described in the
-[XDG Desktop entry specification][] you likely don't need to do anything.
+[XDG Desktop entry specification] you likely don't need to do anything.
 
 #### Notes for applications using GTK
 
-For GTK/GLib based applications see [DBus launching in GNOME's wiki][]. The `<command line arguments>` in this case is `--gapplication-service`. You should invoke `g_appliction_hold()` after the first request from the distributor to ensure the application keeps running long enough to process all the requests. When done processing the push notifications invoke `g_application_release()`. This will allow the application to shut down again until the next push notification arrives or the user clicks on a desktop notification.
+For GTK/GLib based applications see [DBus launching in GNOME's wiki]. The `<command line arguments>` in this case is `--gapplication-service`. You should invoke `g_appliction_hold()` after the first request from the distributor to ensure the application keeps running long enough to process all the requests. When done processing the push notifications invoke `g_application_release()`. This will allow the application to shut down again until the next push notification arrives or the user clicks on a desktop notification.
 
 ### Choosing a distributor
 
@@ -172,15 +180,17 @@ The application should call [org.unifiedpush.Distributor1.Register] on every sta
 
 ### D-Bus Interface Introspection XML files
 
-- [org.unifiedpush.Distributor1.xml](https://codeberg.org/UnifiedPush/specifications/src/branch/main/specifications/dbus/org.unifiedpush.Distributor1.xml)
-- [org.unifiedpush.Connector1.xml](https://codeberg.org/UnifiedPush/specifications/src/branch/main/specifications/dbus/org.unifiedpush.Connector1.xml)
+* [org.unifiedpush.Distributor1.xml](https://codeberg.org/UnifiedPush/specifications/src/branch/main/specifications/dbus/org.unifiedpush.Distributor1.xml)
+* [org.unifiedpush.Connector1.xml](https://codeberg.org/UnifiedPush/specifications/src/branch/main/specifications/dbus/org.unifiedpush.Connector1.xml)
 
 ## References
 
 ### Internal References
 
 [Resources]
+
 [org.unifiedpush.Distributor1.Register]
+
 [org.unifiedpush.Connector1.NewEndpoint]
 
 [Resources]: #resources
@@ -190,11 +200,17 @@ The application should call [org.unifiedpush.Distributor1.Register] on every sta
 ### Normative References
 
 [SEC 1] SEC 1: Elliptic Curve Cryptography
+
 [RFC7515] JSON Web Signature (JWS)
+
 [RFC9562] Universally Unique IDentifiers (UUIDs)
+
 [RFC8030] Generic Event Delivery Using HTTP Push
+
 [RFC8292] Voluntary Application Server Identification (VAPID) for Web Push
+
 [RFC8291] Message Encryption for Web Push
+
 [XDG Desktop entry specification] XDG Desktop entry specification
 
 [SEC 1]: https://www.secg.org/sec1-v2.pdf "SEC 1: Elliptic Curve Cryptography"
@@ -203,11 +219,13 @@ The application should call [org.unifiedpush.Distributor1.Register] on every sta
 [RFC8030]: https://www.rfc-editor.org/rfc/rfc8030 "Generic Event Delivery Using HTTP Push"
 [RFC8292]: https://www.rfc-editor.org/rfc/rfc8292 "Voluntary Application Server Identification (VAPID) for Web Push"
 [RFC8291]: https://www.rfc-editor.org/rfc/rfc8291 "Message Encryption for Web Push"
+
 [XDG Desktop entry specification]: https://specifications.freedesktop.org/desktop-entry-spec/latest/dbus.html
 
 ### Informative References
 
 [DBus daemon manpage] The DBus daemon manpage
+
 [DBus launching in GNOME's wiki] Setting up an application for D-Bus Launching in GNOME's wiki
 
 [DBus daemon manpage]: https://dbus.freedesktop.org/doc/dbus-daemon.1.html
