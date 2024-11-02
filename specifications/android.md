@@ -41,19 +41,19 @@ UnifiedPush Spec: AND_3.0.0
     * Use unique token which contain sufficient entropy so it cannot be guessed; UUIDv4 ([RFC9562]) is suggested.
     * Save this id linked to the connection token, so a same id could be send to 2 different applications but one cannot acknowledge for the other.
 * Push message: This is an array of bytes (ByteArray) sent by the application server to the push server. The distributor sends this message to the end user application. It MUST be the raw POST data received by the push server (or the rewrite proxy if present). The message MUST be an encrypted content that follows [RFC8291]. Its size is between 1 and 4096 bytes (inclusive).
-* Endpoint: This is the URL of the push resource as defined by [RFC8030]. This url point to the push server and is distributed to the end user application by the distributor. This MUST be at most 1000 bytes. As defined by [RFC8030], authorization is managed using capability URLs ([CAP-URI]). Therefore, the endpoint MUST contain enough random entropy to ensure it is diffucult to successfully guess a valid URL. We recommend using a 160 bits (20 bytes) random value URL-safe base64 encoded string.
+* Endpoint: This is the URL of the push resource as defined by [RFC8030]. This url point to the push server and is distributed to the end user application by the distributor. This MUST be at most 1000 bytes. As defined by [RFC8030], authorization is managed using capability URLs ([CAP-URI]). Therefore, the endpoint MUST contain enough random entropy to ensure it is difficult to successfully guess a valid URL. We recommend using a 160 bits (20 bytes) random value URL-safe base64 encoded string.
 * Short description of the registration: This is a string send by the end user application during registration describing the registration purpose (eg. the account name of the application) the distributor may show on its user interface. It is at most 100 bytes long string.
 
 ## Overview
 
-Bellow, some usual events of the lifecycle of a connection between the end user application and the distrbutor:
+Bellow, some usual events of the lifecycle of a connection between the end user application and the distributor:
 
 AS: the application server
 C: the end user application (with a _connector_)
 D: the distributor
 PS: the push server (connected to D)
 
-1. C enables Unifiedpush for the first time, try to select the default distributor.
+1. C enables UnifiedPush for the first time, try to select the default distributor.
     1. C: Request the default application for the deep link `unifiedpush://link`
     2. D: [Link Activity] opens and set result to RESULT_OK with a pending intent (extra: pi)
 2. C request one or more registration, the token is different for each registration.
@@ -73,7 +73,7 @@ PS: the push server (connected to D)
 6. D. checks a registration with C. that hasn't be used for weeks (~ping):
     1. C<-D: [org.unifiedpush.android.connector.NEW_ENDPOINT] (extra: token, endpoint, id)
     2. C->D: [org.unifiedpush.android.distributor.MESSAGE_ACK] (extra: token, id)
-7. C. hasn't acknowledge any message nor ping (point 5.) since 30days, or the user logout of its distributor, D unregister the registration:
+7. C. hasn't acknowledge any message nor ping (point 5.) since 30 days, or the user logout of its distributor, D unregister the registration:
     1. C<-D: [org.unifiedpush.android.connector.UNREGISTERED] (extra: token)
 8. C. tries to register but the registration fail
     1. C->D: [org.unifiedpush.android.distributor.REGISTER] (extra: token, pi)
@@ -207,7 +207,7 @@ The end user application requesting this activity MUST expect a result, for inst
 
 ## Messaging Broadcast Receiver
 
-The exposed broadcast receiver of the end user application MUST handle 3 differents actions:
+The exposed broadcast receiver of the end user application MUST handle 3 different actions:
 
 * [org.unifiedpush.android.connector.NEW_ENDPOINT]
 * [org.unifiedpush.android.connector.MESSAGE]
@@ -312,7 +312,7 @@ The end user application MUST expose a service with the following action:
 
 * [org.unifiedpush.android.connector.RAISE_TO_FOREGROUND]
 
-The distributor MAY bind to this service during 5 seconds when sending a message to raise the application to the foreground. This allows the application to start a foreground service from the background without battery unrestriction.
+The distributor MAY bind to this service during 5 seconds when sending a message to raise the application to the foreground. This allows the application to start a foreground service from the background without unrestricted battery usage rights.
 
 ## References
 
