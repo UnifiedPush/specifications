@@ -318,6 +318,7 @@ The distributor MAY bind to this service during 5 seconds when sending a message
 [Link Activity]: #link-activity
 [Messaging Broadcast Receiver]: #messaging-broadcast-receiver
 [Service to raise to the foreground]: #service-to-raise-to-the-foreground
+[org.unifiedpush.android.connector.RAISE_TO_FOREGROUND]: #service-to-raise-to-the-foreground
 [org.unifiedpush.android.distributor.REGISTER]: #orgunifiedpushandroiddistributorregister
 [org.unifiedpush.android.distributor.UNREGISTER]: #orgunifiedpushandroiddistributorunregister
 [org.unifiedpush.android.distributor.MESSAGE_ACK]: #orgunifiedpushandroiddistributormessageack
