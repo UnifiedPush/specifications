@@ -18,7 +18,6 @@ UnifiedPush Spec: DBUS_0.3.0
 * [Appendix: Implementation practices](#appendix-implementation-practices)
     * [Registration](#registration)
     * [D-Bus Service](#d-bus-service)
-        * [Notes for applications using GTK](#notes-for-applications-using-gtk)
     * [Choosing a distributor](#choosing-a-distributor)
     * [On Application Startup](#on-application-startup)
     * [D-Bus Interface Introspection XML files](#d-bus-interface-introspection-xml-files)
@@ -166,9 +165,7 @@ After processing the push notification (and e.g. sending out a desktop notificat
 Note that for GUI apps the activation by the DBus daemon should not open any user visible windows, it should be in "daemon" mode waiting for any DBus calls. If your application already supports DBus activation as described in the
 [XDG Desktop entry specification] you likely don't need to do anything.
 
-#### Notes for applications using GTK
-
-For GTK/GLib based applications see [DBus launching in GNOME's wiki]. The `<command line arguments>` in this case is `--gapplication-service`. You should invoke `g_appliction_hold()` after the first request from the distributor to ensure the application keeps running long enough to process all the requests. When done processing the push notifications invoke `g_application_release()`. This will allow the application to shut down again until the next push notification arrives or the user clicks on a desktop notification.
+For example, for GTK/GLib based applications the `<command line arguments>` is `--gapplication-service` (see [DBus launching in GNOME's wiki]). The application invokes `g_appliction_hold()` after the first request from the distributor to ensure the application keeps running long enough to process all the requests. When done processing the push notifications it invokes `g_application_release()`. This allows the application to shut down again until the next push notification arrives or the user clicks on a desktop notification.
 
 ### Choosing a distributor
 
