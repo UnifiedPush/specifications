@@ -7,6 +7,7 @@
 This is the server that hosts the application.
 
 ## End User Application
+
 or User Agent
 
 (e.g. [FluffyChat](https://fluffychat.im/), [Fedilab](https://fedilab.app/), [Tox Push Message App](https://github.com/zoff99/tox_push_msg_app))
