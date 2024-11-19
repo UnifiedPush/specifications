@@ -57,7 +57,7 @@ PS: the push server (connected to D)
     1. C: Request the default application for the deep link `unifiedpush://link`
     2. D: [Link Activity] opens and set result to RESULT_OK with a pending intent (extra: pi)
 2. C request one or more registration, the token is different for each registration.
-    1. C->D: [org.unifiedpush.android.distributor.REGISTER] SDK<24: (extra: token, pi) SDK>=24: (extra: token, flag: FLAG_SHARE_IDENTITY)
+    1. C->D: [org.unifiedpush.android.distributor.REGISTER] SDK<24: (extra: token, pi) SDK>=24: (extra: token, flag: FLAG_SHARE_IDENTITY), optionally: (extra: vapid, message)
     2. C<-D: [org.unifiedpush.android.connector.NEW_ENDPOINT] (extra: token, endpoint, id)
     3. C->D: [org.unifiedpush.android.distributor.MESSAGE_ACK] (extra: token, id)
     4. C sends the endpoint to AS
@@ -76,7 +76,7 @@ PS: the push server (connected to D)
 7. C. hasn't acknowledge any message nor ping (point 5.) since 30 days, or the user logout of its distributor, D unregister the registration:
     1. C<-D: [org.unifiedpush.android.connector.UNREGISTERED] (extra: token)
 8. C. tries to register but the registration fail
-    1. C->D: [org.unifiedpush.android.distributor.REGISTER] (extra: token, pi)
+    1. C->D: [org.unifiedpush.android.distributor.REGISTER] SDK<24: (extra: token, pi) SDK>=24: (extra: token, flag: FLAG_SHARE_IDENTITY), optionally: (extra: vapid, message)
     2. C<-D: [org.unifiedpush.android.connector.REGISTRATION_FAILED] (extra: token, reason)
     3. reason may be:
         1. "INTERNAL_ERROR": C can try again directly to register (point 2.)
