@@ -173,7 +173,7 @@ Therefore, a distributor installed on a device that supports application targeti
 
 After sending this action, the end user application MUST remove the connection token from the valid tokens even if the unregistration is not acknowledged by the distributor with [org.unifiedpush.android.connector.UNREGISTERED]. The end user application MAY cache this connection token to inform the user if the unregistration is not acknowledge after some time.
 
-The distributor MUST send [org.unifiedpush.android.connector.UNREGISTERED] when the unregistration is being processed right after the unregistration request. If the distributor can't process the unregistration right after the unregistration request, for instance if the distributor can't reach its push server, the distributor MUST send [org.unifiedpush.android.connector.UNREGISTERED] when the required information to delete the endpoint have been saved, and process the unregistration when possible.
+The distributor MUST send [org.unifiedpush.android.connector.UNREGISTERED] when the unregistration is processed.
 
 ### org.unifiedpush.android.distributor.MESSAGE_ACK
 
