@@ -164,6 +164,13 @@ The connector sends this action to unregister from push messages. The intent MUS
 
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the distributor, the distributor will ignore this request.
 
+If the application runs on SDK 34 or above, the broadcast message MUST be send with broadcast option flag FLAG_SHARE_IDENTITY.
+Else, the intent MUST contain the following extra:
+
+* pi (PendingIntent): an IMMUTABLE pending intent requesting a broadcast to a dummy application (`org.unifiedpush.dummy_app`). This pending intent is used to get the package name of the end user application.
+
+Therefore, a distributor installed on a device that supports application targeting SDK lower than 34 MUST implement the resolution using the PendingIntent. When receiving a broadcast without shared identify, with PendingIntent, the distributor SHOULD check that the requesting application targets a SDK lower than 34.
+
 After sending this action, the end user application MUST remove the connection token from the valid tokens even if the unregistration is not acknowledged by the distributor with [org.unifiedpush.android.connector.UNREGISTERED]. The end user application MAY cache this connection token to inform the user if the unregistration is not acknowledge after some time.
 
 The distributor MUST send [org.unifiedpush.android.connector.UNREGISTERED] when the unregistration is being processed right after the unregistration request. If the distributor can't process the unregistration right after the unregistration request, for instance if the distributor can't reach its push server, the distributor MUST send [org.unifiedpush.android.connector.UNREGISTERED] when the required information to delete the endpoint have been saved, and process the unregistration when possible.
