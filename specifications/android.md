@@ -262,7 +262,7 @@ The intent SHOULD contain 1 additional extra:
 The reason MUST be either:
 
 * "INTERNAL_ERROR": This is a generic error type, the connector can try again directly.
-* "NETWORK": The registration failed because of missing network connection, try again when network is back.
+* "NETWORK": The registration failed because of missing network connection, try again when network is back. A distributor can also return this reason if the endpoint for a registration may have changed and may be invalidated but the distributor can't know because of missing network connection.
 * "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason. The distributor MUST send this reason if the direct sending of a new registration will fail and this is not due to a network problem.
 * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
 
