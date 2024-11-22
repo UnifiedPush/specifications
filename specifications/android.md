@@ -169,7 +169,9 @@ Else, the intent MUST contain the following extra:
 
 * pi (PendingIntent): an IMMUTABLE pending intent requesting a broadcast to a dummy application (`org.unifiedpush.dummy_app`). This pending intent is used to get the package name of the end user application.
 
-Therefore, a distributor installed on a device that supports application targeting SDK lower than 34 MUST implement the resolution using the PendingIntent. When receiving a broadcast without shared identify, with PendingIntent, the distributor SHOULD check that the requesting application targets a SDK lower than 34.
+A distributor MAY ignore the shared identity or the pending intent to identify the end user application, if it has linked the identity of the application to the token during the registration.
+
+Therefore, a distributor relying on the identity shared during this intent, installed on a device that supports application targeting SDK lower than 34 MUST implement the resolution using the PendingIntent. When receiving a broadcast without shared identify, with PendingIntent, the distributor SHOULD check that the requesting application targets a SDK lower than 34.
 
 After sending this action, the end user application MUST remove the connection token from the valid tokens even if the unregistration is not acknowledged by the distributor with [org.unifiedpush.android.connector.UNREGISTERED]. The end user application MAY cache this connection token to inform the user if the unregistration is not acknowledge after some time.
 
