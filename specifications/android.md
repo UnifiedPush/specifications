@@ -57,7 +57,7 @@ PS: the push server (connected to D)
     1. C: Request the default application for the deep link `unifiedpush://link`
     2. D: [Link Activity] opens and set result to RESULT_OK with a pending intent (extra: pi)
 2. C request one or more registration, the token is different for each registration.
-    1. C->D: [org.unifiedpush.android.distributor.REGISTER] SDK<24: (extra: token, pi) SDK>=24: (extra: token, flag: FLAG_SHARE_IDENTITY)
+    1. C->D: [org.unifiedpush.android.distributor.REGISTER] SDK<24: (extra: token, pi) SDK>=24: (extra: token, flag: FLAG_SHARE_IDENTITY), optionally: (extra: vapid, message)
     2. C<-D: [org.unifiedpush.android.connector.NEW_ENDPOINT] (extra: token, endpoint, id)
     3. C->D: [org.unifiedpush.android.distributor.MESSAGE_ACK] (extra: token, id)
     4. C sends the endpoint to AS
@@ -76,7 +76,7 @@ PS: the push server (connected to D)
 7. C. hasn't acknowledge any message nor ping (point 5.) since 30 days, or the user logout of its distributor, D unregister the registration:
     1. C<-D: [org.unifiedpush.android.connector.UNREGISTERED] (extra: token)
 8. C. tries to register but the registration fail
-    1. C->D: [org.unifiedpush.android.distributor.REGISTER] (extra: token, pi)
+    1. C->D: [org.unifiedpush.android.distributor.REGISTER] SDK<24: (extra: token, pi) SDK>=24: (extra: token, flag: FLAG_SHARE_IDENTITY), optionally: (extra: vapid, message)
     2. C<-D: [org.unifiedpush.android.connector.REGISTRATION_FAILED] (extra: token, reason)
     3. reason may be:
         1. "INTERNAL_ERROR": C can try again directly to register (point 2.)
@@ -164,9 +164,18 @@ The connector sends this action to unregister from push messages. The intent MUS
 
 * token (String): This is the connection token as defined in the [Resources] supplied by the end user application during registration. If this token is not known by the distributor, the distributor will ignore this request.
 
+If the application runs on SDK 34 or above, the broadcast message MUST be send with broadcast option flag FLAG_SHARE_IDENTITY.
+Else, the intent MUST contain the following extra:
+
+* pi (PendingIntent): an IMMUTABLE pending intent requesting a broadcast to a dummy application (`org.unifiedpush.dummy_app`). This pending intent is used to get the package name of the end user application.
+
+A distributor MAY ignore the shared identity or the pending intent to identify the end user application, if it has linked the identity of the application to the token during the registration.
+
+Therefore, a distributor relying on the identity shared during this intent, installed on a device that supports application targeting SDK lower than 34 MUST implement the resolution using the PendingIntent. When receiving a broadcast without shared identify, with PendingIntent, the distributor SHOULD check that the requesting application targets a SDK lower than 34.
+
 After sending this action, the end user application MUST remove the connection token from the valid tokens even if the unregistration is not acknowledged by the distributor with [org.unifiedpush.android.connector.UNREGISTERED]. The end user application MAY cache this connection token to inform the user if the unregistration is not acknowledge after some time.
 
-The distributor MUST send [org.unifiedpush.android.connector.UNREGISTERED] when the unregistration is being processed right after the unregistration request. If the distributor can't process the unregistration right after the unregistration request, for instance if the distributor can't reach its push server, the distributor MUST send [org.unifiedpush.android.connector.UNREGISTERED] when the required information to delete the endpoint have been saved, and process the unregistration when possible.
+The distributor MUST send [org.unifiedpush.android.connector.UNREGISTERED] when the unregistration is processed.
 
 ### org.unifiedpush.android.distributor.MESSAGE_ACK
 
@@ -255,7 +264,7 @@ The intent SHOULD contain 1 additional extra:
 The reason MUST be either:
 
 * "INTERNAL_ERROR": This is a generic error type, the connector can try again directly.
-* "NETWORK": The registration failed because of missing network connection, try again when network is back.
+* "NETWORK": The registration failed because of missing network connection, try again when network is back. A distributor can also return this reason if the endpoint for a registration may have changed and may be invalidated but the distributor can't know because of missing network connection.
 * "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason. The distributor MUST send this reason if the direct sending of a new registration will fail and this is not due to a network problem.
 * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
 
