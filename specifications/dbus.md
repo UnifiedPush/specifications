@@ -6,15 +6,14 @@ UnifiedPush Spec: DBUS_0.3.0
 
 <!--toc:start-->
 
-* [Index](#index)
 * [Resources](#resources)
 * [Connector API](#connector-api)
-    * [org.unifiedpush.Connector2.Message (Variant dictionary `a{sv}`) → (Variant dictionary `a{sv}`)](#orgunifiedpushconnector2message-variant-dictionary-asv-variant-dictionary-asv)
-    * [org.unifiedpush.Connector2.NewEndpoint (Variant dictionary `a{sv}`) → nothing](#orgunifiedpushconnector2newendpoint-variant-dictionary-asv-nothing)
-    * [org.unifiedpush.Connector2.Unregistered (Variant dictionary `a{sv}`) → nothing](#orgunifiedpushconnector2unregistered-variant-dictionary-asv-nothing)
+    * [org.unifiedpush.Connector2.Message](#orgunifiedpushconnector2message)
+    * [org.unifiedpush.Connector2.NewEndpoint](#orgunifiedpushconnector2newendpoint)
+    * [org.unifiedpush.Connector2.Unregistered](#orgunifiedpushconnector2unregistered)
 * [Distributor API](#distributor-api)
-    * [org.unifiedpush.Distributor2.Register (Variant dictionary `a{sv}`) → (Variant dictionary `a{sv}`)](#orgunifiedpushdistributor2register-variant-dictionary-asv-variant-dictionary-asv)
-    * [org.unifiedpush.Distributor2.Unregister (Variant dictionary `a{sv}`) → nothing](#orgunifiedpushdistributor2unregister-variant-dictionary-asv-nothing)
+    * [org.unifiedpush.Distributor2.Register](#orgunifiedpushdistributor2register)
+    * [org.unifiedpush.Distributor2.Unregister](#orgunifiedpushdistributor2unregister)
 * [Appendix: Implementation practices](#appendix-implementation-practices)
     * [Registration](#registration)
     * [D-Bus Service](#d-bus-service)
@@ -47,19 +46,19 @@ The connector MUST implement the `org.unifiedpush.Connector2` interface at the o
 
 The caller of the methods in this interface MUST NOT wait for a response from them.
 
-### org.unifiedpush.Connector2.Message (Variant dictionary `a{sv}`) → (Variant dictionary `a{sv}`)
+### org.unifiedpush.Connector2.Message
 
 The distributor MUST call this method to send a new push message to the connector.
 
-Arguments MUST be a variant dictionary with the field below:
+Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
 * key: "token", value: (String) the connection token as defined in the [Resources]
 * key: "message", value: (String) the push message as defined in the [Resources], which is the raw POST data received by the push server.
 * (Optional) key: "id", value: (String) the message id as defined in the [Resources], or an empty string.
 
-This method MUST return a variant dictionary with the field below. If the dictionary doesn't contain any field, the connector MAY not return anything:
+This method MUST return a variant dictionary (`a{sv}`) with the field below:
 
-* key: "id", value: (String) the message id received during the call, if present.
+* (If key was send) key: "id", value: (String) the message id received during the call.
 
 The distributor SHOULD follow the push message urgency as defined in [RFC8030], section 5.3. If the push server does not send an urgency header, the urgency is considered as normal. Else, only messages more urgent than the minimum urgency SHOULD be send to the end user application. The minimum urgency depending on the device state is as follow, in order of increasing urgency:
 
@@ -70,7 +69,7 @@ The distributor SHOULD follow the push message urgency as defined in [RFC8030], 
 | normal   | On neither power nor Wi-Fi  | Chat or Calendar Message                    |
 | high     | Low battery                 | Incoming phone call or time-sensitive alert |
 
-### org.unifiedpush.Connector2.NewEndpoint (Variant dictionary `a{sv}`) → nothing
+### org.unifiedpush.Connector2.NewEndpoint
 
 The distributor MUST call this method to inform the connector of the endpoint URL, both after registering for the first time, and if the endpoint changes afterwards.
 
@@ -80,24 +79,24 @@ The distributor MUST call this method in the following cases:
 * the end user application requested a registration ([org.unifiedpush.Distributor2.Register]) with a token it is already using
 * the endpoint for the registration changed
 
-Arguments MUST be a variant dictionary with the field below:
+Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
 * key: "token", value: (String) the connection token as defined in the  [Resources]
 * key: "endpoint", value: (String) the endpoint as defined in the [Resources]
 
-This method does not return anything.
+This method MUST return an empty variant dictionary (`a{sv}`).
 
-### org.unifiedpush.Connector2.Unregistered (Variant dictionary `a{sv}`) → nothing
+### org.unifiedpush.Connector2.Unregistered
 
 The distributor MUST call this method to confirm unregistration or to inform the application that it has been unregistered.
 
 If this action is send to inform the application, the intent MUST have the following argument:
 
-Arguments MUST be a variant dictionary with the field below:
+Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
 * key: "token", value: (String) the token of the connection
 
-This method does not return anything.
+This method MUST return an empty variant dictionary (`a{sv}`).
 
 If the app wants to remain registered, it MUST register again.
 
@@ -107,11 +106,11 @@ Distributors MUST provide a service with a name beginning with `org.unifiedpush.
 
 The distributor MUST implement the `org.unifiedpush.Distributor2` interface at the object path `/org/unifiedpush/Distributor`.
 
-### org.unifiedpush.Distributor2.Register (Variant dictionary `a{sv}`) → (Variant dictionary `a{sv}`)
+### org.unifiedpush.Distributor2.Register
 
 The connector MUST call this method to register for push messages or to retreive the push endpoint.
 
-Arguments MUST be a variant dictionary with the field below:
+Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
 * key: "service", value: (String) the connector service name for the application
 * key: "token", value: (String) a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side
@@ -120,7 +119,7 @@ Arguments MUST be a variant dictionary with the field below:
 
 When it has not registered before, the connector MUST generate a random string to use as its token, and call this method with that token as its argument to register. At every subsequent startup of the app, it SHOULD call this method with the same token as before, to fetch the newest endpoint from the connector.
 
-This method MUST return a variant dictionary with the field below.
+This method MUST return a variant dictionary (`a{sv}`) with the field below.
 
 * key: "success", value: (String) "REGISTRATION_FAILED" or "REGISTRATION_SUCCEEDED". "REGISTRATION_SUCCEEDED" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
 * (Required if REGISTRATION_FAILED) key: "reason", value: (String) a reason string that MUST be:
@@ -136,11 +135,11 @@ The distributor MAY restrict registrations to sandboxed applications only. The d
 
 For example, a distributor may be used by flatpak applications only. It can then get the caller PID of the registration request using the SO_PEERCRED socket option then get flatpak information on `/proc/<pid>/root/.flatpak-info`. The distributor will allow registrations only if the service is explicitely allowed.
 
-### org.unifiedpush.Distributor2.Unregister (Variant dictionary `a{sv}`) → nothing
+### org.unifiedpush.Distributor2.Unregister
 
 The connector MUST call this method to unregister for push messages.
 
-Arguments MUST be a variant dictionary with the field below:
+Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
 * key: "token", value: (String) the token of the connection
 
@@ -197,8 +196,8 @@ The application should call [org.unifiedpush.Distributor2.Register] on every sta
 [org.unifiedpush.Connector2.NewEndpoint]
 
 [Resources]: #resources
-[org.unifiedpush.Distributor2.Register]: #orgunifiedpushdistributor2register-variant-dictionary-asv-variant-dictionary-asv
-[org.unifiedpush.Connector2.NewEndpoint]: #orgunifiedpushconnector2newendpoint-variant-dictionary-asv-nothing
+[org.unifiedpush.Distributor2.Register]: #orgunifiedpushdistributor2register
+[org.unifiedpush.Connector2.NewEndpoint]: #orgunifiedpushconnector2newendpoint
 
 ### Normative References
 

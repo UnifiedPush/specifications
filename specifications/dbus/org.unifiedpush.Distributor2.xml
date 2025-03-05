@@ -11,7 +11,7 @@
     </method>
     <method name="Unregister">
       <arg name="args" type="a{sv}" direction="in"/>
-      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+      <arg name="res" type="a{sv}" direction="out"/>
     </method>
   </interface>
 </node>
