@@ -128,8 +128,13 @@ This method MUST return a variant dictionary with the field below.
     * "NETWORK": The registration failed because of missing network connection, try again when network is back.
     * "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason.
     * "VAPID_REQUIRED": If the distributor requires a VAPID key and the end user application doesn't send one, the distributor respond with this reason.
+    * "UNAUTHORIZED": If the distributor allows registrations only from sandboxes applications and the calling process doesn't follow the requirements.
 
 If registration succeeded, the distributor MUST call the connector's [org.unifiedpush.Connector2.NewEndpoint] method to deliver the new push endpoint to it.
+
+The distributor MAY restrict registrations to sandboxed applications only. The distributor SHOULD then control the service is correctly exposed by the application if the supported sandboxing technology allows it.
+
+For example, a distributor may be used by flatpak applications only. It can then get the caller PID of the registration request using the SO_PEERCRED socket option then get flatpak information on `/proc/<pid>/root/.flatpak-info`. The distributor will allow registrations only if the service is explicitely allowed.
 
 ### org.unifiedpush.Distributor2.Unregister (Variant dictionary `a{sv}`) → nothing
 
@@ -147,7 +152,7 @@ These are some practices and hints that may be useful to you if you want to impl
 
 ### Registration
 
-When a connector first wants to register, it should fetch all service names currently registered on the session bus, and filter it to only those which begin with `org.unifiedpush.Distributor.`. It should then choose one of these (see below) to use as its distributor. It must then generate a random string to use as a token, and call the [org.unifiedpush.Distributor2.Register] method with this token as the argument. If the return value indicates "NEW_ENDPOINT", the distributor will then call the connector's [org.unifiedpush.Connector2.NewEndpoint] method to deliver the endpoint to it. When this has happened, the connector saves the token and the  endpoint received in its persistent storage. Registration is now complete.
+When a connector first wants to register, it should fetch all service names currently registered on the session bus, and filter it to only those which begin with `org.unifiedpush.Distributor.`. It should then choose one of these (see below) to use as its distributor. It must then generate a random string to use as a token (UUIDv4 is recommended), and call the [org.unifiedpush.Distributor2.Register] method with this token as the argument. If the return value indicates "NEW_ENDPOINT", the distributor will then call the connector's [org.unifiedpush.Connector2.NewEndpoint] method to deliver the endpoint to it. When this has happened, the connector saves the token and the  endpoint received in its persistent storage. Registration is now complete.
 
 On subsequent startups, the connector should call [org.unifiedpush.Distributor2.Register] with the *same* token, and store the new endpoint returned, if it has changed. The connector should also implement the [org.unifiedpush.Connector2.NewEndpoint] method to receive notification about a changed endpoint from the distributor at any time.
 
