@@ -52,13 +52,13 @@ The distributor MUST call this method to send a new push message to the connecto
 
 Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
-* key: "token", value: (String) the connection token as defined in the [Resources]
-* key: "message", value: (String) the push message as defined in the [Resources], which is the raw POST data received by the push server.
-* (Optional) key: "id", value: (String) the message id as defined in the [Resources], or an empty string.
+* key: "token", value: (String `s`) the connection token as defined in the [Resources]
+* key: "message", value: (Byte array `ay`) the push message as defined in the [Resources], which is the raw POST data received by the push server.
+* (Optional) key: "id", value: (String `s`) the message id as defined in the [Resources], or an empty string.
 
 This method MUST return a variant dictionary (`a{sv}`) with the field below:
 
-* (If key was send) key: "id", value: (String) the message id received during the call.
+* (If key was send) key: "id", value: (String `s`) the message id received during the call.
 
 The distributor SHOULD follow the push message urgency as defined in [RFC8030], section 5.3. If the push server does not send an urgency header, the urgency is considered as normal. Else, only messages more urgent than the minimum urgency SHOULD be send to the end user application. The minimum urgency depending on the device state is as follow, in order of increasing urgency:
 
@@ -81,8 +81,8 @@ The distributor MUST call this method in the following cases:
 
 Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
-* key: "token", value: (String) the connection token as defined in the  [Resources]
-* key: "endpoint", value: (String) the endpoint as defined in the [Resources]
+* key: "token", value: (String `s`) the connection token as defined in the  [Resources]
+* key: "endpoint", value: (String `s`) the endpoint as defined in the [Resources]
 
 This method MUST return an empty variant dictionary (`a{sv}`).
 
@@ -94,7 +94,7 @@ If this action is send to inform the application, the intent MUST have the follo
 
 Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
-* key: "token", value: (String) the token of the connection
+* key: "token", value: (String `s`) the token of the connection
 
 This method MUST return an empty variant dictionary (`a{sv}`).
 
@@ -112,17 +112,17 @@ The connector MUST call this method to register for push messages or to retreive
 
 Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
-* key: "service", value: (String) the connector service name for the application
-* key: "token", value: (String) a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side
-* (Optional) key: "description", value: (String) a description of the app and its reason for using push notifications. This MAY be shown to the user by the distributor.
-* (Optional) key: "vapid", value: (String) a vapid key as defined in the [Resources]
+* key: "service", value: (String `s`) the connector service name for the application
+* key: "token", value: (String `s`) a random token to identify the connection between the connector and the distributor. It MUST be unique on distributor side
+* (Optional) key: "description", value: (String `s`) a description of the app and its reason for using push notifications. This MAY be shown to the user by the distributor.
+* (Optional) key: "vapid", value: (String `s`) a vapid key as defined in the [Resources]
 
 When it has not registered before, the connector MUST generate a random string to use as its token, and call this method with that token as its argument to register. At every subsequent startup of the app, it SHOULD call this method with the same token as before, to fetch the newest endpoint from the connector.
 
 This method MUST return a variant dictionary (`a{sv}`) with the field below.
 
-* key: "success", value: (String) "REGISTRATION_FAILED" or "REGISTRATION_SUCCEEDED". "REGISTRATION_SUCCEEDED" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
-* (Required if REGISTRATION_FAILED) key: "reason", value: (String) a reason string that MUST be:
+* key: "success", value: (String `s`) "REGISTRATION_FAILED" or "REGISTRATION_SUCCEEDED". "REGISTRATION_SUCCEEDED" if registration succeeded. It is "REGISTRATION_FAILED" in case the registration failed.
+* (Required if REGISTRATION_FAILED) key: "reason", value: (String `s`) a reason string that MUST be:
     * "INTERNAL_ERROR": This is a generic error type, the connector can try again later
     * "NETWORK": The registration failed because of missing network connection, try again when network is back.
     * "ACTION_REQUIRED": The distributor requires a user action to work. For instance, the distributor may be log out of the push server and requires the user to log in. If the distributor has a limit of number of registrations and this limit has been reached, the distributor sends this reason.
@@ -141,7 +141,7 @@ The connector MUST call this method to unregister for push messages.
 
 Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
-* key: "token", value: (String) the token of the connection
+* key: "token", value: (String `s`) the token of the connection
 
 This method MUST return an empty variant dictionary (`a{sv}`).
 
