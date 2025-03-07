@@ -143,7 +143,7 @@ Arguments MUST be a variant dictionary (`a{sv}`) with the field below:
 
 * key: "token", value: (String) the token of the connection
 
-The method does not return anything.
+This method MUST return an empty variant dictionary (`a{sv}`).
 
 ## Appendix: Implementation practices
 
